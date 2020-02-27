@@ -1504,7 +1504,7 @@ Public Class ModifyWindow
     Private Sub NudZombieLimitLine1_ValueChanged(sender As Object, e As EventArgs)
         If IsLoaded Then
             Dim line As Integer = NudZombieLimitLine1.Value
-            PVZ.Memory.WriteByte(&H4255C4, line - 1)
+            PVZ.Memory.WriteByte(&H4255C4, line)
             PVZ.Memory.WriteInteger(&H4253C7, 20 + 80 * line)
         End If
     End Sub
@@ -1512,7 +1512,7 @@ Public Class ModifyWindow
     Private Sub NudZombieLimitLine2_ValueChanged(sender As Object, e As EventArgs)
         If IsLoaded Then
             Dim line As Integer = NudZombieLimitLine2.Value
-            PVZ.Memory.WriteByte(&H4255DD, line - 1)
+            PVZ.Memory.WriteByte(&H4255DD, line)
             PVZ.Memory.WriteInteger(&H4253F7, 20 + 80 * line)
         End If
     End Sub
@@ -1520,7 +1520,7 @@ Public Class ModifyWindow
     Private Sub NudZombieLimitLine3_ValueChanged(sender As Object, e As EventArgs)
         If IsLoaded Then
             Dim line As Integer = NudZombieLimitLine3.Value
-            PVZ.Memory.WriteByte(&H4255A9, line - 1)
+            PVZ.Memory.WriteByte(&H4255A9, line)
             PVZ.Memory.WriteInteger(&H425416, 20 + 80 * line)
         End If
     End Sub
