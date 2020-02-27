@@ -444,10 +444,8 @@ Public Class PVZ
     ''' </summary>
     ''' <param name="CancelEventLoop">如果你不希望结束事件循环可以设置False(但这意味着申请的内存讲不被释放)</param>
     Public Shared Sub CloseGame(ByVal CancelEventLoop As Boolean)
+        If hprocess = 0 Then Return
         Memory.WriteBytes(&H42706C, {&H89, &H58, &H14, &HC7, &H40, &H1C, &H78, &H4B, 5, 0})
-        CloseHandle(hprocess)
-        hprocess = 0
-        Funinited = False
         If CancelEventLoop Then
             '恢复事件循环
             Projectile.EventLoop.Stop­()
@@ -457,6 +455,9 @@ Public Class PVZ
         End If
         '恢复传送门代码
         Memory.WriteBytes(&H42706C, {137, 88, 20, 199, 64, 28, 120, 75, 5, 0})
+        CloseHandle(hprocess)
+        hprocess = 0
+        Funinited = False
     End Sub
     Public Shared Sub CloseGame()
         CloseGame(True)
