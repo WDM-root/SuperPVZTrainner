@@ -61,9 +61,8 @@ Class MainWindow
     '窗口关闭
     Private Sub Window_Closed(sender As Object, e As EventArgs)
         PVZ.CloseGame()
-        For Each win As Window In Application.Current.Windows
-            win.Close()
-        Next
+        Application.Current.Shutdown()
+        Forms.Application.Exit()
     End Sub
     '添加pvz脚本
     Private Sub AddLBIScr(ByVal scriptfile As String)
