@@ -1,4 +1,4 @@
-﻿Imports PVZClass
+Imports PVZClass
 Imports System.Linq
 Imports System.Runtime.InteropServices
 Imports System.Windows.Interop
@@ -13,6 +13,12 @@ Public Class HpTrackWindow
     <DllImport("user32.dll", SetLastError:=True)>
     Private Shared Function SetWindowLong(ByVal hWnd As IntPtr, ByVal nIndex As Integer, ByVal dwNewLong As Integer) As Integer
     End Function
+    Private Declare Auto Function IsIconic Lib "user32.dll" (ByVal hwnd As IntPtr) As Boolean
+    ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
+    ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function GetForegroundWindow() As IntPtr
+    End Function
     Private prezombienum As Integer = 0
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         IsHitTestVisible = False
@@ -25,6 +31,12 @@ Public Class HpTrackWindow
         Dim p As New Ipoint()
         If Not IsNothing(PVZ.Game) Then
             ClientToScreen(PVZ.Game.MainWindowHandle, p)
+            If IsIconic(PVZ.Game.MainWindowHandle) Then
+                Visibility = Visibility.Collapsed
+            Else
+                Visibility = Visibility.Visible
+            End If
+            Topmost = GetForegroundWindow() = PVZ.Game.MainWindowHandle
         End If
         Top = p.y
         Left = p.x
