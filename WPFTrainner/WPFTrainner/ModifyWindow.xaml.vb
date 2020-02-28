@@ -1222,7 +1222,7 @@ Public Class ModifyWindow
 
     Private Sub NudPMarigoldDrop_ValueChanged(sender As Object, e As EventArgs)
         If IsLoaded Then
-            PVZ.Memory.WriteByte(&H45FB07, GetCoinTypeValue(NudPMarigoldDrop.Value))
+            PVZ.Memory.WriteByte(&H45FB07, NudPMarigoldDrop.Value)
         End If
     End Sub
 
