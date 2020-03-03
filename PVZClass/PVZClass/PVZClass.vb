@@ -278,7 +278,7 @@ Public Class PVZ
     ''' <summary>
     ''' 此类的版本
     ''' </summary>
-    Public Shared ClassVer As String = "1.2.4.9"
+    Public Shared ClassVer As String = "1.2.6.0"
     ''' <summary>
     ''' 获取游戏版本
     ''' </summary>
@@ -392,12 +392,11 @@ Public Class PVZ
         Memory.FreeMemory(Variable)
         CloseHandle(hprocess)
         hprocess = 0
-        RunGame = False
         Game = Process.GetProcessById(pid)
         hprocess = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
         Variable = Memory.AllocMemory()
-        RunGame = True
         AddHandler Game.Exited, AddressOf CloseGame
+        Return True
     End Function
 
     ''' <summary>
@@ -447,10 +446,6 @@ Public Class PVZ
         If hprocess = 0 Then Return
         Memory.WriteBytes(&H42706C, {&H89, &H58, &H14, &HC7, &H40, &H1C, &H78, &H4B, 5, 0})
         If CancelEventLoop Then
-            '恢复事件循环
-            Projectile.EventLoop.Stop­()
-            Zombie.EventLoop.Stop­()
-            Plant.EventLoop.Stop­()
             Memory.FreeMemory(Variable)
         End If
         '恢复传送门代码
@@ -495,6 +490,18 @@ Public Class PVZ
         End If
     End Sub
     ''' <summary>
+    ''' 将XY的坐标转换为RC的坐标
+    ''' </summary>
+    Public Shared Sub XYToRC(ByRef X As Integer, ByRef Y As Integer)
+        Dim temp = Y
+        Y = (X - 40) / 80
+        If SixRoute Then
+            X = (temp - 80) / 85
+        Else
+            X = (temp - 80) / 100
+        End If
+    End Sub
+    ''' <summary>
     ''' 将RC的坐标转换为XY的坐标
     ''' </summary>
     ''' <param name="RC">RC坐标</param>
@@ -505,6 +512,18 @@ Public Class PVZ
             RC.Y = temp * 85 + 80
         Else
             RC.Y = temp * 100 + 80
+        End If
+    End Sub
+    ''' <summary>
+    ''' 将RC的坐标转换为XY的坐标
+    ''' </summary>
+    Public Shared Sub RCToXY(ByRef X As Integer, ByRef Y As Integer)
+        Dim temp = X
+        X = Y * 80 + 40
+        If SixRoute Then
+            Y = temp * 85 + 80
+        Else
+            Y = temp * 100 + 80
         End If
     End Sub
 #End Region
@@ -961,7 +980,7 @@ Public Class PVZ
     ''' <param name="X">掉落物横坐标</param>
     ''' <param name="Y">掉落物纵坐标</param>
     ''' <param name="State">掉落物状态</param>
-    Public Shared Function CreateCoin(ByVal Type As CoinType, ByVal X As Integer, ByVal Y As Byte, ByVal State As Coin.MotionType) As Coin
+    Public Shared Function CreateCoin(ByVal Type As CoinType, ByVal X As Integer, ByVal Y As Integer, ByVal State As Coin.MotionType, Optional ByVal Card As CardType = CardType.Peashooter) As Coin
         If MainObjectExist Then
             Dim AsmCode As Byte() = {
                 mov_ecx, 0, 0, 0, 0,
@@ -980,7 +999,11 @@ Public Class PVZ
             ReplaceBytes(AsmCode, 10, X)
             ReplaceBytes(AsmCode, 15, Y)
             ReplaceBytes(AsmCode, 33, Variable)
-            Return New Coin(Memory.Execute(AsmCode))
+            Dim coin = New Coin(Memory.Execute(AsmCode))
+            If Type = CoinType.PlantCard Then
+                coin.CardType = Card
+            End If
+            Return coin
         End If
         Return Nothing
     End Function
@@ -1087,7 +1110,7 @@ Public Class PVZ
     ''' <param name="Row">弹坑所在行</param>
     ''' <param name="Column">弹坑所在列</param>
     ''' <param name="Timeout">弹坑消失时间</param>
-    Public Shared Function CreateCrater(ByVal Row As Integer, ByVal Column As Integer, ByVal Timeout As Integer) As Crater
+    Public Shared Function CreateCrater(ByVal Row As Integer, ByVal Column As Integer, Optional ByVal Timeout As Integer = 18000) As Crater
         If MainObjectExist Then
             Dim Re = New Crater(CreateGriditem().BaseAddress)
             With Re
@@ -2688,12 +2711,12 @@ Public Class PVZ
     ''' 植物特效类型枚举
     ''' </summary>
     Public Enum PlantEffectType
-        CherryBomb = 2
-        PotatoMine = 4
-        Iceshroon = 14
-        Doomshroon = 15
-        Jalapeno = 20
-        Blover = 27
+        <Description("樱桃爆炸")> CherryBomb = 2
+        <Description("土豆雷爆炸")> PotatoMine = 4
+        <Description("冰冻全屏")> Iceshroon = 14
+        <Description("毁灭菇爆炸")> Doomshroon = 15
+        <Description("辣椒爆炸")> Jalapeno = 20
+        <Description("三叶草吹风")> Blover = 27
     End Enum
     ''' <summary>
     ''' 植物对象
@@ -5930,6 +5953,14 @@ Public Class PVZ
     Public Shared ReadOnly Property SixRoute As Boolean
         Get
             Return Scene = SceneType.Pool Or Scene = SceneType.Fog
+        End Get
+    End Property
+    ''' <summary>
+    ''' 获取地图有5路还是6路
+    ''' </summary>
+    Public Shared ReadOnly Property RouteCount As Integer
+        Get
+            Return IIf(SixRoute, 6, 5)
         End Get
     End Property
     ''' <summary>

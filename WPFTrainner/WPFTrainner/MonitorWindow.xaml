@@ -1176,7 +1176,7 @@
                         </TextBlock.Resources>
                     </TextBlock>
                     <local:MySlider x:Name="SAttributeTime" Maximum="80" Canvas.Left="82" Canvas.Top="186" ValueChanged="SAttributeTime_ValueChanged"  Width="195"/>
-                    <TextBlock Text="关卡进程"  Canvas.Left="12" Canvas.Top="220">
+                    <TextBlock Text="关卡进程" Canvas.Top="220" Width="82" TextAlignment="Center">
                         <TextBlock.Resources>
                             <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                 <sys:String>关卡进程</sys:String>
@@ -1186,7 +1186,7 @@
                     </TextBlock>
                     <darkstyle:DarkTextBox x:Name="TBLevelProcess" Text="0" Canvas.Left="82" Canvas.Top="220" Width="195" 
                                  PreviewKeyDown="TBLevelProcess_PreviewKeyDown"  BorderThickness="1"/>
-                    <TextBlock Text="关卡轮数"  Canvas.Left="12" Canvas.Top="252">
+                    <TextBlock Text="关卡轮数" Canvas.Top="252" Width="82" TextAlignment="Center">
                         <TextBlock.Resources>
                             <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                 <sys:String>关卡轮数</sys:String>
@@ -1196,6 +1196,16 @@
                     </TextBlock>
                     <darkstyle:DarkTextBox x:Name="TBLevelRound" Text="0" Canvas.Left="82" Canvas.Top="252" Width="195" 
                                  PreviewKeyDown="TBLevelRound_PreviewKeyDown"  BorderThickness="1"/>
+                    <TextBlock Text="场景类型" Canvas.Top="282" Width="82" TextAlignment="Center">
+                        <TextBlock.Resources>
+                            <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                <sys:String>场景类型</sys:String>
+                                <sys:String>SceneType</sys:String>
+                            </x:Array>
+                        </TextBlock.Resources>
+                    </TextBlock>
+                    <local:MyComboBox x:Name="CBSceneType" Tag="SceneType" Canvas.Left="82" Canvas.Top="279"  Width="195" SelectionChanged="CBSceneType_SelectionChanged"
+                                      ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
                 </Canvas>
             </TabItem>
             <TabItem Foreground="White" Header="背景音乐"  TabIndex="7"  Background="#FF252526" Style="{DynamicResource TabItemStyle1}">

@@ -34,7 +34,7 @@ Partial Public Class PVZ
         If Switch Then
             Memory.WriteByte(&H42DF5D, 56)
         Else
-            Memory.WriteByte(&H54EBA8, 136)
+            Memory.WriteByte(&H42DF5D, 136)
         End If
     End Sub
     ''' <summary>

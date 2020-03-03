@@ -279,7 +279,7 @@ namespace IZFormatSetter
         //UserControl被加载到窗口上时的事件处理器，事件由UserControl.xaml的6行57列挂载
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            mainForm = Assembly.Load(Properties.Resources.IZ自制关卡快捷布阵器__V1_1_1_).GetType("IZ自制关卡快捷布阵器_V1._1._0.Main");
+            mainForm = Assembly.Load(Properties.Resources.IZ自制关卡快捷布阵器__V1_1_2_).GetType("IZ自制关卡快捷布阵器_V1._1._2.Main");
             wkForm = (System.Windows.Forms.Form)Activator.CreateInstance(mainForm);
             wkForm.FormClosing += WkForm_FormClosing;
             ReadInfo_Click(null, null);
@@ -406,7 +406,7 @@ namespace IZFormatSetter
 
         public string Text => "IZ布阵器";
 
-        public string ToolTip => "IZ布阵器V1.1,作者冥谷川恋,内含Winkle雪线布阵器V1.1.1";
+        public string ToolTip => "IZ布阵器V1.1,作者冥谷川恋,内含Winkle雪线布阵器V1.1.2";
 
         public void Layout(Window owner, Canvas canvas)//接口函数，由修改器调用
         {

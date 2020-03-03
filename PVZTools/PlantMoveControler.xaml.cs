@@ -27,92 +27,60 @@ namespace PVZTools
         {
             InitializeComponent();
         }
-
+        GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            RegisterHotKey();
+            keyboardHook.KeyDownEvent += KeyboardHook_KeyDownEvent;
+            keyboardHook.Install();
         }
 
-        private void UnRegisterHotKey()
+        private void KeyboardHook_KeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            IntPtr handle = new WindowInteropHelper(Window.GetWindow(this)).Handle;
-            HotKey.UnregisterHotKey(handle, 100);
-            HotKey.UnregisterHotKey(handle, 101);
-            HotKey.UnregisterHotKey(handle, 102);
-            HotKey.UnregisterHotKey(handle, 103);
-            HotKey.UnregisterHotKey(handle, 104);
-            HotKey.UnregisterHotKey(handle, 105);
-            HotKey.UnregisterHotKey(handle, 106);
-            HotKey.UnregisterHotKey(handle, 107);
-        }
-
-        private void RegisterHotKey()
-        {
-            IntPtr handle = new WindowInteropHelper(Window.GetWindow(this)).Handle;
-            HotKey.RegisterHotKey(handle, 100, HotKey.KeyModifiers.None, (int)Keys.Up);
-            HotKey.RegisterHotKey(handle, 101, HotKey.KeyModifiers.None, (int)Keys.Down);
-            HotKey.RegisterHotKey(handle, 102, HotKey.KeyModifiers.None, (int)Keys.Left);
-            HotKey.RegisterHotKey(handle, 103, HotKey.KeyModifiers.None, (int)Keys.Right);
-            HotKey.RegisterHotKey(handle, 104, HotKey.KeyModifiers.None, (int)Keys.W);
-            HotKey.RegisterHotKey(handle, 105, HotKey.KeyModifiers.None, (int)Keys.S);
-            HotKey.RegisterHotKey(handle, 106, HotKey.KeyModifiers.None, (int)Keys.A);
-            HotKey.RegisterHotKey(handle, 107, HotKey.KeyModifiers.None, (int)Keys.D);
-
-            HwndSource source = HwndSource.FromHwnd(handle);
-            source.AddHook(HotKeyHook);
-        }
-
-
-        private IntPtr HotKeyHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            const int WM_HOTKEY = 0x0312;
-            if (msg == WM_HOTKEY)
+            
+            var plant1 = new PVZ.Plant((int)NudPlantIndex1.Value);
+            var plant2 = new PVZ.Plant((int)NudPlantIndex2.Value);
+            switch(e.KeyValue)
             {
-                var plant1 = new PVZ.Plant((int)NudPlantIndex1.Value);
-                var plant2 = new PVZ.Plant((int)NudPlantIndex2.Value);
-                switch (wParam.ToInt32())
-                {
-                    case 100:
-                        plant1.Row--;
-                        break;
-                    case 101:
-                        plant1.Row++;
-                        break;
-                    case 102:
-                        plant1.Column--;
-                        break;
-                    case 103:
-                        plant1.Column++;
-                        break;
-                    case 104:
-                        plant2.Row--;
-                        break;
-                    case 105:
-                        plant2.Row++;
-                        break;
-                    case 106:
-                        plant2.Column--;
-                        break;
-                    case 107:
-                        plant2.Column++;
-                        break;
-                }
-                var pos = new System.Drawing.Point(plant1.Row, plant1.Column);
-                PVZ.RCToXY(ref pos);
-                plant1.X = pos.X;
-                plant1.Y = pos.Y;
-                pos = new System.Drawing.Point(plant2.Row, plant2.Column);
-                PVZ.RCToXY(ref pos);
-                plant2.X = pos.X;
-                plant2.Y = pos.Y;
-                Refresh();
+                case (int)Keys.Up:
+                    plant1.Row--;
+                    break;
+                case (int)Keys.Down:
+                    plant1.Row++;
+                    break;
+                case (int)Keys.Left:
+                    plant1.Column--;
+                    break;
+                case (int)Keys.Right:
+                    plant1.Column++;
+                    break;
+                case (int)Keys.W:
+                    plant2.Row--;
+                    break;
+                case (int)Keys.S:
+                    plant2.Row++;
+                    break;
+                case (int)Keys.A:
+                    plant2.Column--;
+                    break;
+                case (int)Keys.D:
+                    plant2.Column++;
+                    break;
             }
-            return IntPtr.Zero;
+            var pos = new System.Drawing.Point(plant1.Row, plant1.Column);
+            PVZ.RCToXY(ref pos);
+            plant1.X = pos.X;
+            plant1.Y = pos.Y;
+            pos = new System.Drawing.Point(plant2.Row, plant2.Column);
+            PVZ.RCToXY(ref pos);
+            plant2.X = pos.X;
+            plant2.Y = pos.Y;
+            Refresh();
         }
+
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            UnRegisterHotKey();
+            keyboardHook.UnInstall();
         }
 
         private void NudPlantIndex1_ValueChanged(object sender, EventArgs e)

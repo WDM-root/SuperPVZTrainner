@@ -63,9 +63,9 @@ namespace IZFormatSetter.Properties {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        internal static byte[] IZ自制关卡快捷布阵器__V1_1_1_ {
+        internal static byte[] IZ自制关卡快捷布阵器__V1_1_2_ {
             get {
-                object obj = ResourceManager.GetObject("IZ自制关卡快捷布阵器__V1_1_1_", resourceCulture);
+                object obj = ResourceManager.GetObject("IZ自制关卡快捷布阵器__V1_1_2_", resourceCulture);
                 return ((byte[])(obj));
             }
         }

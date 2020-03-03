@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -34,7 +35,19 @@ namespace DarkStyle
             ToolTipService.SetShowDuration(this, 20000);
         }
     }
-    
+
+    public class DarkToggleButton : ToggleButton
+    {
+        public DarkToggleButton()
+        {
+            Width = 120;
+            Foreground = Globals.Foreground;
+            Background = Globals.Background;
+            Style = FindResource("ToggleButtonStyle1") as Style;
+            ToolTipService.SetShowDuration(this, 20000);
+        }
+    }
+
     public class MinimizeButton : DarkButton
     {
         public MinimizeButton(): base()

@@ -490,6 +490,9 @@ Public Class MonitorWindow
         If Not TBLevelRound.IsFocused Then
             TBLevelRound.Text = PVZ.Miscellaneous.Round
         End If
+        If Not CBSceneType.IsFocused Then
+            CBSceneType.SelectedIndex = PVZ.Scene
+        End If
     End Sub
     '背景音乐
     Private Sub Timer8Tick(sender As Object, e As EventArgs)
@@ -1057,6 +1060,12 @@ Public Class MonitorWindow
             con.RenderTransform = New ScaleTransform(scale / 100, scale / 100)
             Height = 470 * scale / 100
             Width = 400 * scale / 100
+        End If
+    End Sub
+
+    Private Sub CBSceneType_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        If CBSceneType.IsMouseCaptured Then
+            PVZ.Scene = CBSceneType.SelectedIndex
         End If
     End Sub
 End Class

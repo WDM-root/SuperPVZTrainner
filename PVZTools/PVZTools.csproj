@@ -59,7 +59,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HotKey.cs" />
+    <Compile Include="GlobalKeyboardHook.cs" />
     <Compile Include="LawnStringsManager.xaml.cs">
       <DependentUpon>LawnStringsManager.xaml</DependentUpon>
     </Compile>

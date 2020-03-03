@@ -3386,7 +3386,7 @@
                             </TextBlock>
                             <darkstyle:DarkComboBox x:Name="CBDamageSpecial" Canvas.Left="91" Canvas.Top="38"  Width="130" SelectionChanged="CBDamageSpecial_SelectionChanged"
                                       ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                <darkstyle:DarkComboBoxItem Content="灰烬伤害" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="灰烬伤害">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>灰烬伤害</sys:String>
@@ -3404,7 +3404,7 @@
                                         </local:MyToolTip>
                                     </darkstyle:DarkComboBoxItem.ToolTip>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="即死判断" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="即死判断">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>即死判断</sys:String>
@@ -3422,7 +3422,7 @@
                                         </local:MyToolTip>
                                     </darkstyle:DarkComboBoxItem.ToolTip>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="土豆雷" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="土豆雷">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>土豆雷</sys:String>
@@ -3430,7 +3430,7 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="大嘴花" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="大嘴花">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>大嘴花</sys:String>
@@ -3448,7 +3448,7 @@
                                         </local:MyToolTip>
                                     </darkstyle:DarkComboBoxItem.ToolTip>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="寒冰菇" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="寒冰菇">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>寒冰菇</sys:String>
@@ -3456,7 +3456,7 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="倭瓜" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="倭瓜">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>倭瓜</sys:String>
@@ -3464,7 +3464,7 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="范围伤害" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="范围伤害">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>范围伤害</sys:String>
@@ -3495,7 +3495,7 @@
                             </TextBlock>
                             <darkstyle:DarkComboBox x:Name="CBDamageZombie" Canvas.Left="91" Canvas.Top="66"  Width="130" SelectionChanged="CBDamageZombie_SelectionChanged"
                                       ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                <darkstyle:DarkComboBoxItem Content="僵尸啃咬植物" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="僵尸啃咬植物">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>僵尸啃咬植物</sys:String>
@@ -3503,7 +3503,7 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="僵尸啃咬僵尸" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="僵尸啃咬僵尸">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>僵尸啃咬僵尸</sys:String>
@@ -3511,7 +3511,7 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="碾压地刺王" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="碾压地刺王">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>碾压地刺王</sys:String>
@@ -3543,7 +3543,7 @@
                             </TextBlock>
                             <darkstyle:DarkComboBox x:Name="CBDamageTime" Canvas.Left="91" Canvas.Top="10"  Width="130" SelectionChanged="CBDamageTime_SelectionChanged"
                                       ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                <darkstyle:DarkComboBoxItem Content="减速时间" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="减速时间">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>减速时间</sys:String>
@@ -3551,7 +3551,15 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="黄油固定时间" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="冻结减速">
+                                    <darkstyle:DarkComboBoxItem.Resources>
+                                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                            <sys:String>冻结减速</sys:String>
+                                            <sys:String>FrozenDecTime</sys:String>
+                                        </x:Array>
+                                    </darkstyle:DarkComboBoxItem.Resources>
+                                </darkstyle:DarkComboBoxItem>
+                                <darkstyle:DarkComboBoxItem Content="黄油固定时间">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                             <sys:String>黄油固定时间</sys:String>
@@ -3559,21 +3567,95 @@
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="冻结时间" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="水中冻结时间">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
-                                            <sys:String>冻结时间</sys:String>
-                                            <sys:String>FrozenTime</sys:String>
+                                            <sys:String>水中冻结时间</sys:String>
+                                            <sys:String>FrozenInWater</sys:String>
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
+                                    <darkstyle:DarkComboBoxItem.ToolTip>
+                                        <local:MyToolTip Content="如果僵尸在陆地上，那么在未减速时使用冻结时间1，否则冻结时间2">
+                                            <ToolTip.Resources>
+                                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                                    <sys:String>如果僵尸在陆地上，那么在未减速时使用冻结时间1，否则冻结时间2</sys:String>
+                                                    <sys:String>When zombies on land,if one is decelerated,use FrozenTime2,else use FrozenTime1</sys:String>
+                                                </x:Array>
+                                            </ToolTip.Resources>
+                                        </local:MyToolTip>
+                                    </darkstyle:DarkComboBoxItem.ToolTip>
                                 </darkstyle:DarkComboBoxItem>
-                                <darkstyle:DarkComboBoxItem Content="冻结减速" Tag="2">
+                                <darkstyle:DarkComboBoxItem Content="冻结1参数1">
                                     <darkstyle:DarkComboBoxItem.Resources>
                                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
-                                            <sys:String>冻结减速</sys:String>
-                                            <sys:String>FrozenDecTime</sys:String>
+                                            <sys:String>冻结1参数1</sys:String>
+                                            <sys:String>Frozen1Arg1</sys:String>
                                         </x:Array>
                                     </darkstyle:DarkComboBoxItem.Resources>
+                                    <darkstyle:DarkComboBoxItem.ToolTip>
+                                        <local:MyToolTip Content="冻结时间1由random(冻结1参数1)+冻结1参数2计算得出">
+                                            <ToolTip.Resources>
+                                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                                    <sys:String>冻结时间1由random(冻结1参数1)+冻结1参数2计算得出</sys:String>
+                                                    <sys:String>FrozenTime1 = random(Frozen1Arg1)+Frozen1Arg2</sys:String>
+                                                </x:Array>
+                                            </ToolTip.Resources>
+                                        </local:MyToolTip>
+                                    </darkstyle:DarkComboBoxItem.ToolTip>
+                                </darkstyle:DarkComboBoxItem>
+                                <darkstyle:DarkComboBoxItem Content="冻结1参数2">
+                                    <darkstyle:DarkComboBoxItem.Resources>
+                                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                            <sys:String>冻结1参数2</sys:String>
+                                            <sys:String>Frozen1Arg2</sys:String>
+                                        </x:Array>
+                                    </darkstyle:DarkComboBoxItem.Resources>
+                                    <darkstyle:DarkComboBoxItem.ToolTip>
+                                        <local:MyToolTip Content="冻结时间1由random(冻结1参数1)+冻结1参数2计算得出">
+                                            <ToolTip.Resources>
+                                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                                    <sys:String>冻结时间1由random(冻结1参数1)+冻结1参数2计算得出</sys:String>
+                                                    <sys:String>FrozenTime1 = random(Frozen1Arg1)+Frozen1Arg2</sys:String>
+                                                </x:Array>
+                                            </ToolTip.Resources>
+                                        </local:MyToolTip>
+                                    </darkstyle:DarkComboBoxItem.ToolTip>
+                                </darkstyle:DarkComboBoxItem>
+                                <darkstyle:DarkComboBoxItem Content="冻结2参数1">
+                                    <darkstyle:DarkComboBoxItem.Resources>
+                                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                            <sys:String>冻结2参数1</sys:String>
+                                            <sys:String>Frozen2Arg1</sys:String>
+                                        </x:Array>
+                                    </darkstyle:DarkComboBoxItem.Resources>
+                                    <darkstyle:DarkComboBoxItem.ToolTip>
+                                        <local:MyToolTip Content="冻结时间2由random(冻结2参数1)+冻结2参数2计算得出">
+                                            <ToolTip.Resources>
+                                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                                    <sys:String>冻结时间2由random(冻结2参数1)+冻结2参数2计算得出</sys:String>
+                                                    <sys:String>FrozenTime2 = random(Frozen2Arg1)+Frozen2Arg2</sys:String>
+                                                </x:Array>
+                                            </ToolTip.Resources>
+                                        </local:MyToolTip>
+                                    </darkstyle:DarkComboBoxItem.ToolTip>
+                                </darkstyle:DarkComboBoxItem>
+                                <darkstyle:DarkComboBoxItem Content="冻结2参数2">
+                                    <darkstyle:DarkComboBoxItem.Resources>
+                                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                            <sys:String>冻结2参数2</sys:String>
+                                            <sys:String>Frozen2Arg2</sys:String>
+                                        </x:Array>
+                                    </darkstyle:DarkComboBoxItem.Resources>
+                                    <darkstyle:DarkComboBoxItem.ToolTip>
+                                        <local:MyToolTip Content="冻结时间2由random(冻结2参数1)+冻结2参数2计算得出">
+                                            <ToolTip.Resources>
+                                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                                    <sys:String>冻结时间2由random(冻结2参数1)+冻结2参数2计算得出</sys:String>
+                                                    <sys:String>FrozenTime2 = random(Frozen2Arg1)+Frozen2Arg2</sys:String>
+                                                </x:Array>
+                                            </ToolTip.Resources>
+                                        </local:MyToolTip>
+                                    </darkstyle:DarkComboBoxItem.ToolTip>
                                 </darkstyle:DarkComboBoxItem>
                             </darkstyle:DarkComboBox>
                             <darkstyle:DarkTextBox x:Name="TBDamageTime" Text="0" Canvas.Left="238" Canvas.Top="10" Width="100" 
@@ -3849,6 +3931,38 @@
                                 <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                     <sys:String>传送门重置时间</sys:String>
                                     <sys:String>Portal reset time</sys:String>
+                                </x:Array>
+                            </darkstyle:DarkComboBoxItem.Resources>
+                        </darkstyle:DarkComboBoxItem>
+                        <darkstyle:DarkComboBoxItem Content="冰道消失时间" >
+                            <darkstyle:DarkComboBoxItem.Resources>
+                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                    <sys:String>冰道消失时间</sys:String>
+                                    <sys:String>Icetrace time</sys:String>
+                                </x:Array>
+                            </darkstyle:DarkComboBoxItem.Resources>
+                        </darkstyle:DarkComboBoxItem>
+                        <darkstyle:DarkComboBoxItem Content="雪橇区冰道消失时间" >
+                            <darkstyle:DarkComboBoxItem.Resources>
+                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                    <sys:String>雪橇区冰道消失时间</sys:String>
+                                    <sys:String>BobsiedBonanza Ice time</sys:String>
+                                </x:Array>
+                            </darkstyle:DarkComboBoxItem.Resources>
+                        </darkstyle:DarkComboBoxItem>
+                        <darkstyle:DarkComboBoxItem Content="雪橇区冰道初始时间" >
+                            <darkstyle:DarkComboBoxItem.Resources>
+                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                    <sys:String>雪橇区冰道初始时间</sys:String>
+                                    <sys:String>BobsiedBonanza Ice init time</sys:String>
+                                </x:Array>
+                            </darkstyle:DarkComboBoxItem.Resources>
+                        </darkstyle:DarkComboBoxItem>
+                        <darkstyle:DarkComboBoxItem Content="弹坑消失时间" >
+                            <darkstyle:DarkComboBoxItem.Resources>
+                                <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                    <sys:String>弹坑消失时间</sys:String>
+                                    <sys:String>Crater countdown</sys:String>
                                 </x:Array>
                             </darkstyle:DarkComboBoxItem.Resources>
                         </darkstyle:DarkComboBoxItem>

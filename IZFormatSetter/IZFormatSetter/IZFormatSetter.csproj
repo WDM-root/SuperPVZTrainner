@@ -182,7 +182,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\IZ自制关卡快捷布阵器 %28V1.1.1%29.dll" />
+    <None Include="Properties\IZ自制关卡快捷布阵器 %28V1.1.2%29.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

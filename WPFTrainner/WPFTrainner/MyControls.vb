@@ -84,15 +84,21 @@ Public Class MyComboBox
     End Sub
     Private Sub MyComboBox_Load(sender As Object, e As RoutedEventArgs)
         If Not IsNothing(Tag) AndAlso Items.Count = 0 Then
-            Dim enumType As Type = GetType(PVZ).GetMember(Tag)(0)
+            Dim tEnum = Tag.ToString().Split({"."c}, StringSplitOptions.RemoveEmptyEntries)
+            Dim enumType As Type
+            If tEnum.Length = 1 Then
+                enumType = GetType(PVZ).GetMember(tEnum(0))(0)
+            Else
+                enumType = GetType(PVZ).GetNestedType(tEnum(0)).GetMember(tEnum(1))(0)
+            End If
             For Each value As [Enum] In [Enum].GetValues(enumType)
-                Dim item = New DarkStyle.DarkComboBoxItem()
-                Dim res As String() = {value.GetDescription(), value.ToString()}
-                item.Resources.Add("Lang", res)
-                item.Content = item.Resources("Lang")(Application.Language)
-                Items.Add(item)
-            Next
-        End If
+                    Dim item = New DarkStyle.DarkComboBoxItem()
+                    Dim res As String() = {value.GetDescription(), value.ToString()}
+                    item.Resources.Add("Lang", res)
+                    item.Content = item.Resources("Lang")(Application.Language)
+                    Items.Add(item)
+                Next
+            End If
     End Sub
 End Class
 
@@ -109,6 +115,24 @@ Public Class NegateConverter
             Return Not value
         End If
         Return value
+    End Function
+End Class
+
+Public Class IndexValueConverter
+    Implements IValueConverter
+    Property IndexValue As Integer
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        If GetType(Integer) = value.GetType() Then
+            Return IndexValue = value
+        End If
+        Return True
+    End Function
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        If GetType(Integer) = value.GetType() Then
+            Return IndexValue = value
+        End If
+        Return True
     End Function
 End Class
 

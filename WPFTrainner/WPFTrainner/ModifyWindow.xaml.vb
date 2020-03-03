@@ -947,7 +947,7 @@ Public Class ModifyWindow
             End If
         End If
     End Sub
-    Dim DamageTimes As Integer() = {&H5309C7, &H532741, &H532415, &H5309CE}
+    Dim DamageTimes As Integer() = {&H5309C7, &H5309CE, &H532741, &H532400, &H53241C, &H532426, &H53240B, &H532415}
     Private Sub CBDamageTime_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
         If IsLoaded Then
             TBDamageTime.Text = PVZ.Memory.ReadInteger(DamageTimes(CBDamageTime.SelectedIndex))
@@ -1040,7 +1040,7 @@ Public Class ModifyWindow
         End If
     End Sub
 
-    Private GroundPropetys = {&H413BA4, &H413BAC, &H413BBA, &H422BD9, &H422C6B, &H466644, &H426FCE, &H4277D8}
+    Private GroundPropetys = {&H413BA4, &H413BAC, &H413BBA, &H422BD9, &H422C6B, &H466644, &H426FCE, &H4277D8, &H52A8B6, &H52A8D2, &H41F7A2, &H466887}
 
     Private Sub TBGroundPropety_PreviewKeyDown(sender As Object, e As KeyEventArgs)
         If DealKeyDown(sender, e) Then
