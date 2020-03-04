@@ -159,21 +159,21 @@ Public Class OperationWindow
         If CBVaseRandom.IsChecked = True Then
             vaseContent = random.Next(4)
             vaseSkin = PVZ.VaseSkin.Unknow
+            Select Case vaseContent
+                Case PVZ.VaseContent.Zombie
+                    zombie = random.Next(33)
+                    If random.Next(40) = 0 Then
+                        vaseSkin = PVZ.VaseSkin.Zombie
+                    End If
+                Case PVZ.VaseContent.Plant
+                    zombie = random.Next(53)
+                    If random.Next(40) = 0 Then
+                        vaseSkin = PVZ.VaseSkin.Leaf
+                    End If
+                Case PVZ.VaseContent.Sun
+                    sun = random.Next(5)
+            End Select
         End If
-        Select Case vaseContent
-            Case PVZ.VaseContent.Zombie
-                zombie = random.Next(33)
-                If random.Next(40) = 0 Then
-                    vaseSkin = PVZ.VaseSkin.Zombie
-                End If
-            Case PVZ.VaseContent.Plant
-                zombie = random.Next(53)
-                If random.Next(40) = 0 Then
-                    vaseSkin = PVZ.VaseSkin.Leaf
-                End If
-            Case PVZ.VaseContent.Sun
-                sun = random.Next(5)
-        End Select
         PVZ.CreateVase(row, column, vaseContent, vaseSkin, zombie, plant, sun)
     End Sub
     Private Sub BtnCreateVase_Click(sender As Object, e As RoutedEventArgs)
