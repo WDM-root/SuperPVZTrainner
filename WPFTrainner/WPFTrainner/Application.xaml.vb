@@ -12,17 +12,6 @@ Class Application
         Dim lang = Thread.CurrentThread.CurrentCulture.Name
         Return lang = "zh-CN" OrElse lang = "en-US"
     End Function
-    Private Function CheckVirtual() As Boolean
-        Dim sn As String = Registry.LocalMachine.OpenSubKey("SYSTEM").OpenSubKey("ControlSet001").OpenSubKey("Control").OpenSubKey("SystemInformation").GetValue("SystemProductName")
-        Dim vms = {"Virtual", "KVM", "VMware", "HVM", "RHEV", "VMLite"}
-        For Each n In vms
-            If sn.Contains(n) Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
 
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs)
         If Not IsChineseSystem() Then
