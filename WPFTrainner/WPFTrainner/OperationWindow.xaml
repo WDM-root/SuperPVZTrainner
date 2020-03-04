@@ -26,8 +26,8 @@
                 </x:Array>
             </TextBlock.Resources>
         </TextBlock>
-        <darkstyle:CloseButton Canvas.Right="10" Canvas.Top="10"/>
-        <darkstyle:MinimizeButton Canvas.Right="50" Canvas.Top="10"/>
+        <darkstyle:CloseButton Canvas.Top="10" Canvas.Left="560"/>
+        <darkstyle:MinimizeButton Canvas.Left="520" Canvas.Top="10"/>
         <TextBlock  Canvas.Left="10" Canvas.Top="35" Foreground="Crimson" Text="----------------------------------------------------------------------------------------------------------------"/>
         <darkstyle:DarkButton x:Name="BtnStartLawnmover" Content="启动小推车" Width="140" Height="25"  Canvas.Left="30" Canvas.Top="55"  Click="BtnStartLawnmover_Click">
             <darkstyle:DarkButton.Resources>

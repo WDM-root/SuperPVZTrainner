@@ -1,10 +1,8 @@
-﻿Imports Microsoft.Win32
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Threading
-Imports System.Drawing
 ''' <summary>
 ''' 此类不可实例化,想修改游戏必须先调用<see cref="PVZ.RunGame()"/>,所有设计时间/倒计时的数值单位均为<see langword="厘秒"/><para/>
 ''' 当前仍然是测试版本，有很多代码在实际应用中并没有作用，甚至影响效率，请酌情删改<para/>
@@ -224,6 +222,7 @@ Public Class PVZ
     Private Shared Funinited As Boolean = False
     Private Shared wcode As Integer
     Private Shared logArg As Integer
+    Public Shared GamePath As String
     Public Shared Property WarningCode As Integer
         Get
             Return wcode
@@ -244,6 +243,10 @@ Public Class PVZ
     ''' 默认寻找游戏名称
     ''' </summary>
     Public Shared GameName As String = "PlantsVsZombies"
+    ''' ''' <summary>
+    ''' 备份寻找游戏名称
+    ''' </summary>
+    Public Shared BackUpGameName As String = "popcapgame1"
     ''' <summary>
     ''' 默认寻找游戏窗口
     ''' </summary>
@@ -308,10 +311,12 @@ Public Class PVZ
 
     Public Shared Function CheckPeocess() As Boolean?
         If hprocess = 0 Then Return Nothing
-        If LogicalInclude(ApplicableVer, GameVer) Then
+        Dim ver = GameVer
+        If WarningCode = 6 Then Return Nothing
+        If ver = PVZVER.V1_0_0_1051 Then
             Return True
         End If
-        If FileVersionInfo.GetVersionInfo(Game.MainModule.FileName).FileVersion = "1.0.0.1051" Then
+        If FileVersionInfo.GetVersionInfo(GamePath).FileVersion = "1.0.0.1051" Then
             Return True
         End If
         WarningCode = 9
@@ -398,6 +403,7 @@ Public Class PVZ
         hprocess = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
         Variable = Memory.AllocMemory()
         AddHandler Game.Exited, AddressOf CloseGame
+        GamePath = Game.MainModule.FileName
         Return True
     End Function
 
@@ -406,10 +412,11 @@ Public Class PVZ
     ''' </summary>
     Public Shared Function RunGame() As Boolean
         CloseGame()
-        For Each Process As Process In Process.GetProcesses()
-            If Process.ProcessName = GameName Then
-                Game = Process
+        For Each process As Process In Process.GetProcesses()
+            If process.ProcessName = GameName Or process.ProcessName = BackUpGameName Then
+                Game = process
                 AddHandler Game.Exited, AddressOf CloseGame
+                GamePath = Game.MainModule.FileName
                 hprocess = OpenProcess(PROCESS_ALL_ACCESS, False, Game.Id)
                 Variable = Memory.AllocMemory()
                 Return True
@@ -422,6 +429,7 @@ Public Class PVZ
             hprocess = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
             Game = Process.GetProcessById(pid)
             AddHandler Game.Exited, AddressOf CloseGame
+            GamePath = Game.MainModule.FileName
             Variable = Memory.AllocMemory()
             Return True
         End If

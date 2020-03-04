@@ -12,8 +12,6 @@ Class Application
         Dim lang = Thread.CurrentThread.CurrentCulture.Name
         Return lang = "zh-CN" OrElse lang = "en-US"
     End Function
-    Private Declare Function NtSetInformationProcess Lib "ntdll.dll" (hProcess As IntPtr, processInformationClass As Integer, ByRef processInformation As Integer, processInformationLength As Integer) As Integer
-
     Private Function CheckVirtual() As Boolean
         Dim sn As String = Registry.LocalMachine.OpenSubKey("SYSTEM").OpenSubKey("ControlSet001").OpenSubKey("Control").OpenSubKey("SystemInformation").GetValue("SystemProductName")
         Dim vms = {"Virtual", "KVM", "VMware", "HVM", "RHEV", "VMLite"}
@@ -27,40 +25,6 @@ Class Application
 
 
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs)
-        Dim da As Process = New Process()
-        da.StartInfo.FileName = "wmic.exe"
-        da.StartInfo.Arguments = "csproduct get uuid"
-        da.StartInfo.UseShellExecute = False
-        da.StartInfo.RedirectStandardInput = True
-        da.StartInfo.RedirectStandardOutput = True
-        da.StartInfo.RedirectStandardError = True
-        da.StartInfo.CreateNoWindow = True
-        Try
-            da.Start()
-            da.StandardInput.WriteLine("exit")
-            Dim strRst As String = da.StandardOutput.ReadToEnd()
-            Dim readLine As String() = strRst.Split(New String() {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
-            Dim id As String = readLine(1).Trim()
-            If id = "676A3BC3-A293-11E7-BE82-9829A6172D0E" Or IsNothing("私人恩怨") Then
-                Dim flag As Boolean
-                While Not flag
-                    flag = MessageBox.Show("我就是讨厌你，你知道吗?", "", MessageBoxButton.YesNo, MessageBoxImage.Error) = MessageBoxResult.Yes
-                End While
-                Process.EnterDebugMode()
-                Dim isCritical As Integer = 1
-                NtSetInformationProcess(Process.GetCurrentProcess().Handle, &H1D, isCritical, 4)
-            End If
-        Catch ex As Exception
-        End Try
-        If CheckVirtual() Then
-            Dim flag As Boolean
-            While Not flag
-                flag = MessageBox.Show("由于一些私人恩怨，程序不支持在虚拟机中运行", "", MessageBoxButton.YesNo, MessageBoxImage.Error) = MessageBoxResult.Yes
-            End While
-            Process.EnterDebugMode()
-            Dim isCritical As Integer = 1
-            NtSetInformationProcess(Process.GetCurrentProcess().Handle, &H1D, isCritical, 4)
-        End If
         If Not IsChineseSystem() Then
             Language = 1
         End If
@@ -123,11 +87,6 @@ Class Application
             ChangeLanguage(frameworkEle.ToolTip)
         End If
     End Sub
-#If Not DEBUG Then
-    Shared Property Dp As Boolean = IIf(Antinet.AntiDebugger.HasDebugger() Or
-                               Antinet.AntiPatcher.VerifyClrPEHeader(),
-                               Antinet.AntiDebugger.PreventManagedDebugger(), False)
-#End If
     <STAThread>
     <Obsolete>
     Public Shared Sub Main()

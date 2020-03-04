@@ -134,4 +134,16 @@ namespace PVZTools
         }
     }
 
+    public class GameDownloadPage : ITrainerExtensionButton
+    {
+        public string Text => "游戏资源下载";
+
+        public string ToolTip => "提供植物大战僵尸游戏的下载地址";
+
+        public void ButtonOnClick()
+        {
+            Process.Start("www.lonelystar.org/download.htm");
+        }
+    }
+
 }

@@ -18,6 +18,9 @@ Class MainWindow
     End Function
     '窗口载入
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
+        openFileDlg = New OpenFileDialog()
+        openFileDlg.DefaultExt = ".dll"
+        openFileDlg.Multiselect = True
         LBMain.Tag = -1
         ListPlugIns.Tag = -1
         FindGame()
@@ -239,22 +242,20 @@ Class MainWindow
     End Sub
     '载入功能
     Private Sub BtnLoadLBMain_Click(sender As Object, e As RoutedEventArgs)
-        Dim ofd = New OpenFileDialog()
-        ofd.DefaultExt = ".pvzs"
         If Application.Language = 1 Then
-            ofd.Filter = "pvz script file|*.pvzs|extension plugin|*.dll"
+            openFileDlg.Filter = "extension plugin|*.dll|pvz script file|*.pvzs"
         Else
-            ofd.Filter = "pvz脚本文件|*.pvzs|扩展插件|*.dll"
+            openFileDlg.Filter = "扩展插件|*.dll|pvz脚本文件|*.pvzs"
         End If
-        ofd.Multiselect = True
-        If ofd.ShowDialog() Then
-            If ofd.FilterIndex = 1 Then
-                For Each f In ofd.FileNames
-                    AddLBIScr(f)
-                Next
-            ElseIf ofd.FilterIndex = 2 Then
-                For Each f In ofd.FileNames
+        openFileDlg.Title = IIf(Application.Language = 1, "Load PlugIn", "载入插件")
+        If openFileDlg.ShowDialog() Then
+            If openFileDlg.FilterIndex = 1 Then
+                For Each f In openFileDlg.FileNames
                     AddExtension(f)
+                Next
+            ElseIf openFileDlg.FilterIndex = 2 Then
+                For Each f In openFileDlg.FileNames
+                    AddLBIScr(f)
                 Next
             End If
         End If
@@ -399,18 +400,31 @@ Class MainWindow
         operate.Show()
     End Sub
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
-        If e.Key = Key.F5 Then
+        If e.Key = Key.F2 Then
             If Application.Language = 1 Then
-                MessageBox.Show(PVZ.LastWarning, "You got following warning", MessageBoxButton.OK, MessageBoxImage.Warning)
+                MessageBox.Show(PVZ.LastWarning, "You got a warning", MessageBoxButton.OK, MessageBoxImage.Warning)
             Else
                 MessageBox.Show(PVZ.LastWarning, "你得到如下警告", MessageBoxButton.OK, MessageBoxImage.Warning)
+            End If
+        ElseIf e.Key = Key.F5 Then
+            If Not IsNothing(PVZ.Game) AndAlso PVZ.Game.HasExited Then
+                Dim startInfo = New ProcessStartInfo()
+                startInfo.FileName = PVZ.GamePath
+                startInfo.WorkingDirectory = Path.GetDirectoryName(PVZ.GamePath)
+                Process.Start(startInfo)
+                Dim thread = New System.Threading.Thread(
+                    Sub()
+                        System.Threading.Thread.Sleep(3000)
+                        Dispatcher.Invoke(AddressOf FindGame)
+                    End Sub)
+                thread.Start()
             End If
         End If
     End Sub
     Private Sub expanderPlugIns_Expanded(sender As Object, e As RoutedEventArgs)
-        BtnMonitor.Visibility = Visibility.Hidden
-        BtnModify.Visibility = Visibility.Hidden
-        BtnOperate.Visibility = Visibility.Hidden
+        BtnMonitor.Visibility = Visibility.Collapsed
+        BtnModify.Visibility = Visibility.Collapsed
+        BtnOperate.Visibility = Visibility.Collapsed
     End Sub
     Private Sub expanderPlugIns_Collapsed(sender As Object, e As RoutedEventArgs)
         BtnMonitor.Visibility = Visibility.Visible
@@ -422,6 +436,7 @@ Class MainWindow
     Dim StatusTextNotSuppost = {"不支持的版本", "NotSuppost"}
     Dim StatusTextOpenFailed = {"打开游戏失败", "OpenFailed"}
     Dim StatusTextNotFound = {"没有找到游戏", "NotFound"}
+    Private openFileDlg As OpenFileDialog
 
     Private Sub BtnFindGame_Click(sender As Object, e As RoutedEventArgs)
         FindGame()
@@ -431,15 +446,18 @@ Class MainWindow
             Dim processSelector = New ProcessSelector()
             If processSelector.ShowDialog() Then
                 If PVZ.RunGame(processSelector.ProcessId) Then
-                    If PVZ.CheckPeocess() Then
-                        TBStatus.Text = StatusTextFound(Application.Language)
-                        PVZ.GameName = processSelector.ProcessName
-                        PVZ.GameTitle = processSelector.WindowName
-                        PVZ.InitFunctions()
-                        PVZ.Game.EnableRaisingEvents = True
-                        AddHandler PVZ.Game.Exited, AddressOf GameExited
+                    Dim check = PVZ.CheckPeocess()
+                    If check.HasValue Then
+                        If check.Value Then
+                            TBStatus.Text = StatusTextFound(Application.Language)
+                            PVZ.InitFunctions()
+                            PVZ.Game.EnableRaisingEvents = True
+                            AddHandler PVZ.Game.Exited, AddressOf GameExited
+                        Else
+                            TBStatus.Text = StatusTextNotSuppost(Application.Language)
+                        End If
                     Else
-                        TBStatus.Text = StatusTextNotSuppost(Application.Language)
+                        TBStatus.Text = StatusTextOpenFailed(Application.Language)
                     End If
                 Else
                     TBStatus.Text = StatusTextNotFound(Application.Language)
