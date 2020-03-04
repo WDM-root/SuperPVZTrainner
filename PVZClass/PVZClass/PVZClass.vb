@@ -310,11 +310,13 @@ Public Class PVZ
         If hprocess = 0 Then Return Nothing
         If LogicalInclude(ApplicableVer, GameVer) Then
             Return True
-        Else
-            WarningCode = 9
-            logArg = Game.Id
-            Return False
         End If
+        If FileVersionInfo.GetVersionInfo(Game.MainModule.FileName).FileVersion = "1.0.0.1051" Then
+            Return True
+        End If
+        WarningCode = 9
+        logArg = Game.Id
+        Return False
     End Function
 #Region "伪汇编标识符"
     '用于描述汇编指令的特定字节
