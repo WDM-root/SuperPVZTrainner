@@ -157,16 +157,25 @@ Public Class OperationWindow
         Dim plant As PVZ.PlantType = CBVasePlant.SelectedIndex
         Dim sun As Integer = Convert.ToDouble(TBVaseSun.Text)
         If CBVaseRandom.IsChecked = True Then
-            vaseContent = random.Next(4)
+            Dim per = random.Next(62)
+            If per = 0 Then
+                vaseContent = PVZ.VaseContent.None
+            ElseIf per < 30 Then
+                vaseContent = PVZ.VaseContent.Plant
+            ElseIf per < 60 Then
+                vaseContent = PVZ.VaseContent.Zombie
+            Else
+                vaseContent = PVZ.VaseContent.Sun
+            End If
             vaseSkin = PVZ.VaseSkin.Unknow
             Select Case vaseContent
                 Case PVZ.VaseContent.Zombie
-                    zombie = random.Next(33)
+                    zombie = random.Next(IIf(MIVaseRandomExclude.IsChecked, 25, 33))
                     If random.Next(40) = 0 Then
                         vaseSkin = PVZ.VaseSkin.Zombie
                     End If
                 Case PVZ.VaseContent.Plant
-                    zombie = random.Next(53)
+                    plant = random.Next(IIf(MIVaseRandomExclude.IsChecked, 40, 53))
                     If random.Next(40) = 0 Then
                         vaseSkin = PVZ.VaseSkin.Leaf
                     End If

@@ -469,13 +469,25 @@
                         </x:Array>
                     </darkstyle:DarkButton.Resources>
                 </darkstyle:DarkButton>
-                <local:MyCheckBox Content="使用随机" x:Name="CBVaseRandom" Canvas.Top="149" Canvas.Left="10" Width="70">
+                <local:MyCheckBox Content="使用随机*" x:Name="CBVaseRandom" Canvas.Top="149" Canvas.Left="10" Width="80">
                     <local:MyCheckBox.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
-                            <sys:String>使用随机</sys:String>
-                            <sys:String>Random</sys:String>
+                            <sys:String>使用随机*</sys:String>
+                            <sys:String>Random*</sys:String>
                         </x:Array>
                     </local:MyCheckBox.Resources>
+                    <local:MyCheckBox.ContextMenu>
+                        <ContextMenu Foreground="White" Background="#FF252526">
+                            <MenuItem Name="MIVaseRandomExclude" IsCheckable="True" Header="排除紫卡和植物僵尸" Background="#FF252526" BorderThickness="0" Template="{DynamicResource MenuItemControlTemplate1}">
+                                <MenuItem.Resources>
+                                    <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                                        <sys:String>排除紫卡和植物僵尸</sys:String>
+                                        <sys:String>Exclude purple cards and zombotanies</sys:String>
+                                    </x:Array>
+                                </MenuItem.Resources>
+                            </MenuItem>
+                        </ContextMenu>
+                    </local:MyCheckBox.ContextMenu>
                 </local:MyCheckBox>
             </Canvas>
         </GroupBox>

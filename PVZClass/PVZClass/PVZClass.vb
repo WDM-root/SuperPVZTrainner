@@ -404,6 +404,9 @@ Public Class PVZ
         Variable = Memory.AllocMemory()
         AddHandler Game.Exited, AddressOf CloseGame
         GamePath = Game.MainModule.FileName
+        If GameVer = PVZVER.NotPVZ Then
+            Return False
+        End If
         Return True
     End Function
 
@@ -419,6 +422,11 @@ Public Class PVZ
                 GamePath = Game.MainModule.FileName
                 hprocess = OpenProcess(PROCESS_ALL_ACCESS, False, Game.Id)
                 Variable = Memory.AllocMemory()
+                If GameVer = PVZVER.NotPVZ Then
+                    CloseGame()
+                    Game.Kill()
+                    Continue For
+                End If
                 Return True
             End If
         Next

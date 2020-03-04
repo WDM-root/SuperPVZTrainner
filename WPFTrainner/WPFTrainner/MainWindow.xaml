@@ -284,13 +284,13 @@
                 </darkstyle:DarkButton>
             </ListBox>
             <darkstyle:DarkButton BorderThickness="0" x:Name="BtnFindGame" Content="寻找游戏" Margin="38,15,80,15" FontSize="14" FontWeight="Bold" Width="80"
-                    Grid.Column="1"  Click="BtnFindGame_Click" MouseDoubleClick="BtnFindGame_MouseDoubleClick">
+                    Grid.Column="1"  Click="BtnFindGame_Click" MouseDown="BtnFindGame_MouseDown" MouseDoubleClick="BtnFindGame_MouseDoubleClick">
                 <Button.ToolTip>
-                    <local:MyToolTip Content="双击可手动选择进程">
+                    <local:MyToolTip Content="双击可手动选择进程，右键重新打开进程，中键强制多开进程">
                         <ToolTip.Resources>
                             <x:Array x:Key="Lang" Type="{x:Type sys:String}">
-                                <sys:String>双击可手动选择进程</sys:String>
-                                <sys:String>Select process manually by double click</sys:String>
+                                <sys:String>双击可手动选择进程，右键重新打开进程，中键强制多开进程</sys:String>
+                                <sys:String>Select process manually by double click.\nRight button can restart process when it is closed.\nMid button can open process forcely</sys:String>
                             </x:Array>
                         </ToolTip.Resources>
                     </local:MyToolTip>

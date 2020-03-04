@@ -5,6 +5,8 @@ Imports System.Reflection
 Imports ITrainerExtension
 Imports System.Globalization
 Imports PVZClass
+Imports System.Runtime.InteropServices
+
 Class MainWindow
     '特定的转换字符串为数字
     Public Shared Function StrToInt(ByVal Value As String) As Integer
@@ -64,6 +66,14 @@ Class MainWindow
     '窗口关闭
     Private Sub Window_Closed(sender As Object, e As EventArgs)
         PVZ.CloseGame()
+        Dim temp = Environment.GetEnvironmentVariable("Temp")
+        For Each f In Directory.GetFiles(temp, "PlantsVsZombies_Temp*.exe")
+            Try
+                File.Delete(f)
+            Catch
+                Continue For
+            End Try
+        Next
         Application.Current.Shutdown()
         Forms.Application.Exit()
     End Sub
@@ -399,6 +409,7 @@ Class MainWindow
         BtnOperate.IsEnabled = False
         operate.Show()
     End Sub
+
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
         If e.Key = Key.F2 Then
             If Application.Language = 1 Then
@@ -407,20 +418,45 @@ Class MainWindow
                 MessageBox.Show(PVZ.LastWarning, "你得到如下警告", MessageBoxButton.OK, MessageBoxImage.Warning)
             End If
         ElseIf e.Key = Key.F5 Then
+            OpenGame()
+        ElseIf e.Key = Key.F6 Then
+            OpenMuiti()
+        End If
+    End Sub
+
+    Private Sub OpenMuiti()
+        If File.Exists(PVZ.GamePath) Then
+            Try
+                Dim temp = Path.Combine(Environment.GetEnvironmentVariable("Temp"), $"PlantsVsZombies_Temp{Rnd() * 1000 * Rnd() * 1000 * Rnd()}.exe")
+                File.Copy(PVZ.GamePath, temp)
+                Using f = File.OpenWrite(temp)
+                    f.Seek(&H153F1B, SeekOrigin.Begin)
+                    f.WriteByte(&HEB)
+                End Using
+                Dim pro = New Process()
+                Dim startInfo = New ProcessStartInfo()
+                startInfo.FileName = temp
+                startInfo.WorkingDirectory = Path.GetDirectoryName(PVZ.GamePath)
+                pro.StartInfo = startInfo
+                pro.Start()
+            Catch
+            End Try
+        End If
+    End Sub
+
+    Private Sub OpenGame()
+        Try
             If Not IsNothing(PVZ.Game) AndAlso PVZ.Game.HasExited Then
                 Dim startInfo = New ProcessStartInfo()
                 startInfo.FileName = PVZ.GamePath
                 startInfo.WorkingDirectory = Path.GetDirectoryName(PVZ.GamePath)
                 Process.Start(startInfo)
-                Dim thread = New System.Threading.Thread(
-                    Sub()
-                        System.Threading.Thread.Sleep(3000)
-                        Dispatcher.Invoke(AddressOf FindGame)
-                    End Sub)
-                thread.Start()
+                FindGame()
             End If
-        End If
+        Catch
+        End Try
     End Sub
+
     Private Sub expanderPlugIns_Expanded(sender As Object, e As RoutedEventArgs)
         BtnMonitor.Visibility = Visibility.Collapsed
         BtnModify.Visibility = Visibility.Collapsed
@@ -519,6 +555,15 @@ For later versions of 1.2.0.1063,1.2.0.1073 and the version from steam all inval
                 output.MainCanvas.Children.Add(btn)
                 output.ShowDialog()
             End If
+        End If
+    End Sub
+
+
+    Private Sub BtnFindGame_MouseDown(sender As Object, e As MouseButtonEventArgs)
+        If e.MiddleButton = MouseButtonState.Pressed Then
+            OpenMuiti()
+        ElseIf e.RightButton = MouseButtonState.Pressed Then
+            OpenGame()
         End If
     End Sub
 End Class
