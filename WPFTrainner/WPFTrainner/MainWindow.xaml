@@ -61,7 +61,7 @@
                 <TextBlock.Resources>
                     <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                         <sys:String>植物大战僵尸修改器</sys:String>
-                        <sys:String>SuperPVZTrainner</sys:String>
+                        <sys:String>SuperPVZTrainer</sys:String>
                     </x:Array>
                 </TextBlock.Resources>
             </TextBlock>
