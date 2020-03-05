@@ -4594,7 +4594,7 @@
                                 </TextBlock.Resources>
                             </TextBlock>
                             <darkstyle:Numericupdown MaxValue="9" x:Name="NudZombieLimitLine3" Canvas.Left="171" Value="6" Canvas.Top="70" Width="155" ValueChanged="NudZombieLimitLine3_ValueChanged"/>
-                            <local:MyCheckBox Content="启动僵尸放置限制线" Tag="EnableZombieLineLimit" HorizontalContentAlignment="Center" Canvas.Top="101" Canvas.Left="96" Width="140">
+                            <local:MyCheckBox Content="启动僵尸放置限制线" Tag="EnableZombieLineLimit" HorizontalContentAlignment="Center" Canvas.Top="101" Canvas.Left="91" Width="165">
                                 <local:MyCheckBox.Resources>
                                     <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                                         <sys:String>启动僵尸放置限制线</sys:String>

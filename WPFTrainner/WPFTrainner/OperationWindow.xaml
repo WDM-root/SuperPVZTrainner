@@ -548,7 +548,7 @@
                 </x:Array>
             </GroupBox.Resources>
             <Canvas>
-                <TextBlock Text="植物效果" Canvas.Top="13" Width="75" TextAlignment="Center" Canvas.Left="10">
+                <TextBlock Text="植物效果" Canvas.Top="13" Width="70" TextAlignment="Center" Canvas.Left="10">
                     <TextBlock.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                             <sys:String>植物效果</sys:String>
@@ -558,7 +558,7 @@
                 </TextBlock>
                 <local:MyComboBox x:Name="CBPlantEffectType" Tag="PlantEffectType" 
                     ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
-                    Canvas.Left="90" Canvas.Top="10"  Width="100"/>
+                    Canvas.Left="85" Canvas.Top="10"  Width="105"/>
                 <darkstyle:DarkButton x:Name="BtnCreatePlantEffectType" Content="生成" Width="68" Height="21"  Canvas.Left="195" Canvas.Top="10"  Click="BtnCreatePlantEffectType_Click">
                     <darkstyle:DarkButton.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
@@ -567,7 +567,7 @@
                         </x:Array>
                     </darkstyle:DarkButton.Resources>
                 </darkstyle:DarkButton>
-                <TextBlock Text="动画效果" Canvas.Top="38" Width="75" TextAlignment="Center" Canvas.Left="10">
+                <TextBlock Text="动画效果" Canvas.Top="38" Width="70" TextAlignment="Center" Canvas.Left="10">
                     <TextBlock.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                             <sys:String>动画效果</sys:String>
@@ -575,7 +575,7 @@
                         </x:Array>
                     </TextBlock.Resources>
                 </TextBlock>
-                <darkstyle:DarkTextBox x:Name="TBEffectType" Text="0" Canvas.Left="90" Canvas.Top="36" Width="100" Height="20" BorderThickness="1"/>
+                <darkstyle:DarkTextBox x:Name="TBEffectType" Text="0" Canvas.Left="85" Canvas.Top="36" Width="105" Height="20" BorderThickness="1"/>
                 <darkstyle:DarkButton x:Name="BtnCreateEffect" Content="生成" Width="68" Height="20"  Canvas.Left="195" Canvas.Top="36" Click="BtnCreateEffect_Click">
                     <darkstyle:DarkButton.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
@@ -584,7 +584,7 @@
                         </x:Array>
                     </darkstyle:DarkButton.Resources>
                 </darkstyle:DarkButton>
-                <TextBlock Text="音效" Canvas.Top="63" Width="75" TextAlignment="Center" Canvas.Left="10">
+                <TextBlock Text="音效" Canvas.Top="63" Width="70" TextAlignment="Center" Canvas.Left="10">
                     <TextBlock.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                             <sys:String>音效</sys:String>
@@ -592,7 +592,7 @@
                         </x:Array>
                     </TextBlock.Resources>
                 </TextBlock>
-                <darkstyle:DarkTextBox x:Name="TBSoundType" Text="0" Canvas.Left="90" Canvas.Top="61" Width="100" Height="20" BorderThickness="1"/>
+                <darkstyle:DarkTextBox x:Name="TBSoundType" Text="0" Canvas.Left="85" Canvas.Top="61" Width="105" Height="20" BorderThickness="1"/>
                 <darkstyle:DarkToggleButton x:Name="BtnCreateSound" Content="生成" Width="68" Height="20"  Canvas.Left="195" Canvas.Top="61" Click="BtnCreateSound_Click">
                     <darkstyle:DarkToggleButton.Resources>
                         <x:Array x:Key="Lang" Type="{x:Type sys:String}">

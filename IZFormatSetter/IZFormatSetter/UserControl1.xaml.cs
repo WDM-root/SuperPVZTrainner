@@ -34,6 +34,10 @@ namespace IZFormatSetter
         {
             System.Windows.Forms.Application.EnableVisualStyles();
         }
+
+        private string[] dialogFilter = new[] { "iz场地文件(*.izf)|*.izf", "iz formation(*.izf)|*.izf" };
+        private string[] saveText = new[] { "保存当前场景", "Save current" };
+        private string[] loadText = new[] { "读取场景文件", "Load from file" };
         //构造函数，即使用new时调用的函数
         public UserControl1()
         {
@@ -41,15 +45,11 @@ namespace IZFormatSetter
             PlantImages = Resources["PlantImages"] as BitmapImage[];//获取植物图片资源，资源在UserControl.xaml中定义
             //创建保存文件的对话框
             saveFileDialog = new Microsoft.Win32.SaveFileDialog();
-            saveFileDialog.Filter = "iz场地文件(*.izf)|*.izf";
             saveFileDialog.DefaultExt = "izf";
-            saveFileDialog.Title = "保存当前场景";
             saveFileDialog.AddExtension = true;
             //创建打开文件的对话框
             openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "iz场地文件(*.izf)|*.izf";
             openFileDialog.DefaultExt = "izf";
-            openFileDialog.Title = "读取场景文件";
             openFileDialog.AddExtension = true;
         }
 
@@ -305,6 +305,8 @@ namespace IZFormatSetter
         //按钮[保存场景] 被点击的事件处理器
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            saveFileDialog.Filter = dialogFilter[ITrainerExtension.Lang.Id];
+            saveFileDialog.Title = saveText[ITrainerExtension.Lang.Id];
             if (saveFileDialog.ShowDialog() == true)//如果保存文件对话框选到了文件
             {
                 //using可以自动管理释放资源流
@@ -327,6 +329,8 @@ namespace IZFormatSetter
         //按钮[读取场景] 被点击的事件处理器
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
+            openFileDialog.Filter = dialogFilter[ITrainerExtension.Lang.Id];
+            openFileDialog.Title = loadText[ITrainerExtension.Lang.Id];
             if (openFileDialog.ShowDialog() == true)//如果打开文件对话框选到了文件
             {
                 //先清空LawnScene中的对象
@@ -405,8 +409,10 @@ namespace IZFormatSetter
         }
 
         public string Text => "IZ布阵器";
+        public string[] TextLang => new[] { "IZ布阵器", "IZ Format Setter" };
 
         public string ToolTip => "IZ布阵器V1.1,作者冥谷川恋,内含Winkle雪线布阵器V1.1.2";
+        public string[] ToolTipLang => new[] { "IZ布阵器V1.1,作者冥谷川恋,内含Winkle雪线布阵器V1.1.2" , "IZ Format SetterV1.1 by Lazuplis,include IZ Format SetterV1.1.2 form Winkle雪线" };
 
         public void Layout(Window owner, Canvas canvas)//接口函数，由修改器调用
         {

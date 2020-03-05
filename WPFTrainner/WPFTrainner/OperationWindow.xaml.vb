@@ -1,8 +1,9 @@
-﻿Imports PVZClass
+﻿Imports ITrainerExtension
+Imports PVZClass
 
 Public Class OperationWindow
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
 
     Public scale As Integer = 100

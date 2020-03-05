@@ -1,4 +1,5 @@
-﻿Imports PVZClass
+﻿Imports ITrainerExtension
+Imports PVZClass
 Public Class ZombieListDialog
     Private currentWave As PVZ.ZombieList.Wave
     Private Sub Window_MouseDown(sender As Object, e As MouseButtonEventArgs)
@@ -13,14 +14,14 @@ Public Class ZombieListDialog
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         LBZombieSeed.Items.Clear()
         For Each zseed In PVZ.ZombieSeed
-            If Application.Language Then
+            If Lang.Id Then
                 LBZombieSeed.Items.Add(zseed.ToString())
             Else
                 LBZombieSeed.Items.Add(zseed.GetDescription())
             End If
         Next
         NudWaveNum.MaxValue = PVZ.WaveNum
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
     Private Sub NudWaveNum_ValueChanged(sender As Object, e As EventArgs)
         If IsLoaded Then
@@ -65,7 +66,7 @@ Public Class ZombieListDialog
         If IsNothing(currentWave) Then Return
         For Each zombie In currentWave.All
             Dim item = New ListBoxItem()
-            If Application.Language Then
+            If Lang.Id Then
                 item.Content = zombie.ToString()
             Else
                 item.Content = zombie.GetDescription()

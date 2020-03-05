@@ -3,6 +3,7 @@ Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
 Imports System.Windows.Media.Animation
+Imports ITrainerExtension
 Imports PVZClass
 
 
@@ -49,13 +50,13 @@ Public Class MyCheckBox
         If IsNothing(ToolTip) Then
             Dim tip = New MyToolTip()
             If IsThreeState And Not extra Then
-                tip.Content = CBoxText1(Application.Language)
+                tip.Content = CBoxText1(Lang.Id)
                 tip.Resources.Add("Lang", CBoxText1)
             ElseIf extra And Not IsThreeState Then
-                tip.Content = CBoxText2(Application.Language)
+                tip.Content = CBoxText2(Lang.Id)
                 tip.Resources.Add("Lang", CBoxText2)
             ElseIf IsThreeState And extra Then
-                tip.Content = CBoxText1(Application.Language) + "," + CBoxText2(Application.Language)
+                tip.Content = CBoxText1(Lang.Id) + "," + CBoxText2(Lang.Id)
                 Dim res = {CBoxText1(0) + "," + CBoxText2(0), CBoxText1(1) + "," + CBoxText2(1)}
                 tip.Resources.Add("Lang", res)
             Else
@@ -92,13 +93,13 @@ Public Class MyComboBox
                 enumType = GetType(PVZ).GetNestedType(tEnum(0)).GetMember(tEnum(1))(0)
             End If
             For Each value As [Enum] In [Enum].GetValues(enumType)
-                    Dim item = New DarkStyle.DarkComboBoxItem()
-                    Dim res As String() = {value.GetDescription(), value.ToString()}
-                    item.Resources.Add("Lang", res)
-                    item.Content = item.Resources("Lang")(Application.Language)
-                    Items.Add(item)
-                Next
-            End If
+                Dim item = New DarkStyle.DarkComboBoxItem()
+                Dim res As String() = {value.GetDescription(), value.ToString()}
+                item.Resources.Add("Lang", res)
+                item.Content = item.Resources("Lang")(Lang.Id)
+                Items.Add(item)
+            Next
+        End If
     End Sub
 End Class
 

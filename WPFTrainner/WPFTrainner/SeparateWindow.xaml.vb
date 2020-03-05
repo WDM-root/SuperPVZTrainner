@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports ITrainerExtension
 
 Public Class SeparateWindow
     Private Sub Window_MouseDown(sender As Object, e As MouseButtonEventArgs)
@@ -26,7 +27,7 @@ Public Class SeparateWindow
         End If
     End Sub
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
 
     Private Sub Window_Closing(sender As Object, e As CancelEventArgs)

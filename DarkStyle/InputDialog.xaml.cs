@@ -20,7 +20,7 @@ namespace DarkStyle
     public partial class InputDialog : Window
     {
 
-        public static string ShowInputDialog(string title, string desc, string def = null)
+        public static string ShowInputDialog(string title, string desc, string def = null, bool eng = false)
         {
             InputDialog input = new InputDialog();
             input.TBTitle.Text = title;
@@ -29,6 +29,11 @@ namespace DarkStyle
             input.TBContent.Text = input.InputValue;
             input.TBContent.Focus();
             input.TBContent.SelectAll();
+            if(eng)
+            {
+                input.BtnOK.Content = "Ok";
+                input.BtnCancel.Content = "Cancel";
+            }
             if (input.ShowDialog() == true)
                 return input.InputValue;
             else

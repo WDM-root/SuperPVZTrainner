@@ -43,7 +43,7 @@
                 </x:Array>
             </GroupBox.Resources>
             <StackPanel>
-                <TextBlock x:Name="TBSelPlant1" TextAlignment="Center" Margin="0,5"/>
+                <TextBlock x:Name="TBSelPlant1" Text="[Nothing]" TextAlignment="Center" Margin="0,5"/>
                 <TextBlock x:Name="TBSelPlantRow1" Text="0行" TextAlignment="Center" Margin="0,5"/>
                 <TextBlock x:Name="TBSelPlantColumn1" Text="0列" TextAlignment="Center" Margin="0,5"/>
             </StackPanel>
@@ -73,7 +73,7 @@
                 </x:Array>
             </GroupBox.Resources>
             <StackPanel>
-                <TextBlock x:Name="TBSelPlant2" TextAlignment="Center" Margin="0,5"/>
+                <TextBlock x:Name="TBSelPlant2" TextAlignment="Center" Text="[Nothing]" Margin="0,5"/>
                 <TextBlock x:Name="TBSelPlantRow2" Text="0行" TextAlignment="Center" Margin="0,5"/>
                 <TextBlock x:Name="TBSelPlantColumn2" Text="0列" TextAlignment="Center" Margin="0,5"/>
             </StackPanel>

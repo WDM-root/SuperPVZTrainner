@@ -36,7 +36,7 @@ Class MainWindow
                 AddLBIScr(Path.GetFullPath(f))
             Next
         End If
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
     '寻找游戏
     Private Sub FindGame()
@@ -44,23 +44,23 @@ Class MainWindow
             Dim check = PVZ.CheckPeocess()
             If check.HasValue Then
                 If check.Value Then
-                    TBStatus.Text = StatusTextFound(Application.Language)
+                    TBStatus.Text = StatusTextFound(Lang.Id)
                     PVZ.InitFunctions()
                     PVZ.Game.EnableRaisingEvents = True
                     AddHandler PVZ.Game.Exited, AddressOf GameExited
                 Else
-                    TBStatus.Text = StatusTextNotSuppost(Application.Language)
+                    TBStatus.Text = StatusTextNotSuppost(Lang.Id)
                 End If
             Else
-                TBStatus.Text = StatusTextOpenFailed(Application.Language)
+                TBStatus.Text = StatusTextOpenFailed(Lang.Id)
             End If
         Else
-            TBStatus.Text = StatusTextNotFound(Application.Language)
+            TBStatus.Text = StatusTextNotFound(Lang.Id)
         End If
     End Sub
 
     Private Sub GameExited()
-        Dispatcher.Invoke(Sub() TBStatus.Text = StatusTextNotFound(Application.Language))
+        Dispatcher.Invoke(Sub() TBStatus.Text = StatusTextNotFound(Lang.Id))
     End Sub
 
     '窗口关闭
@@ -103,7 +103,7 @@ Class MainWindow
         Try
             pvzscript.Start()
         Catch ex As ComponentModel.Win32Exception
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 MessageBox.Show("The program PVZScriptNoConsole.exe was not found." + vbCrLf + "Please place the program in the PVZScript directory", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning)
             Else
                 MessageBox.Show("没有找到程序PVZScriptNoConsole.exe,请将程序放置到PVZScript目录下", "警告", MessageBoxButton.OK, MessageBoxImage.Warning)
@@ -114,7 +114,7 @@ Class MainWindow
     Private Function ChecckPlugIns(file As String) As Boolean
         For Each lbi In ListPlugIns.Items
             If CType(lbi, Control).Tag = file Then
-                If Application.Language = 1 Then
+                If Lang.Id = 1 Then
                     MessageBox.Show($"{file} is already added", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning)
                 Else
                     MessageBox.Show($"项目{file}已经添加", "警告", MessageBoxButton.OK, MessageBoxImage.Warning)
@@ -138,13 +138,13 @@ Class MainWindow
             If type.IsClass Then
                 Dim ifaces() = type.GetInterfaces()
                 For Each iface In ifaces
-                    If iface.Name = "ITrainerExtensionButton" Then
+                    If iface = GetType(ITrainerExtensionButton) Then
                         AddButtonPlugIn(extensionfile, type)
-                    ElseIf iface.Name = "IITrainerExtensionCheckBox" Then
+                    ElseIf iface = GetType(IITrainerExtensionCheckBox) Then
                         AddCheckBoxPlugIn(extensionfile, type)
-                    ElseIf iface.Name = "ITrainerExtensionTextBox" Then
+                    ElseIf iface = GetType(ITrainerExtensionTextBox) Then
                         AddTextBoxPlugIn(extensionfile, type)
-                    ElseIf iface.Name = "ITrainerExtensionUserControl" Then
+                    ElseIf iface = GetType(ITrainerExtensionUserControl) Then
                         AddUserControlPlugIn(extensionfile, type)
                     End If
                 Next
@@ -156,22 +156,27 @@ Class MainWindow
         Dim usercon As ITrainerExtensionUserControl = Activator.CreateInstance(type)
         Dim mi As ListBoxItem = New ListBoxItem With {
             .Content = usercon.Text,
+            .Resources = New ResourceDictionary() From {{“Lang”, usercon.TextLang}},
             .Tag = extensionfile,
             .Foreground = Brushes.White,
             .HorizontalAlignment = HorizontalAlignment.Stretch,
-            .HorizontalContentAlignment = HorizontalAlignment.Center,
-            .ToolTip = New MyToolTip() With {
-                .Content = usercon.ToolTip
-            }
+            .HorizontalContentAlignment = HorizontalAlignment.Center
         }
+        If Not IsNothing(usercon.ToolTip) Then
+            mi.ToolTip = New MyToolTip() With {
+            .Content = usercon.ToolTip,
+            .Resources = New ResourceDictionary() From {{“Lang”, usercon.ToolTipLang}}
+        }
+        End If
         AddHandler mi.MouseDoubleClick,
             Sub()
                 expanderPlugIns.IsExpanded = False
                 Dim expend As ExpendWindow = New ExpendWindow()
                 expend.Tag = mi
                 expend.TBTitle.Text = usercon.Text
+                expend.TBTitle.Resources = New ResourceDictionary() From {{“Lang”, usercon.TextLang}}
                 usercon.Layout(expend, expend.MainCanvas)
-                Application.ChangeLanguage(expend.MainCanvas)
+                Lang.ChangeLanguage(expend.MainCanvas)
                 expend.Show()
                 mi.IsEnabled = False
             End Sub
@@ -183,7 +188,8 @@ Class MainWindow
         Dim lbibtnwithcb As ITrainerExtensionTextBox = Activator.CreateInstance(type)
         Dim TBlock = New TextBlock With {
             .Foreground = Brushes.White,
-            .Text = lbibtnwithcb.Text
+            .Text = lbibtnwithcb.Text,
+            .Resources = New ResourceDictionary() From {{“Lang”, lbibtnwithcb.TextLang}}
         }
         Dim TBox = New TextBox With {
             .VerticalAlignment = VerticalAlignment.Center,
@@ -215,7 +221,13 @@ Class MainWindow
         g.Children.Add(TBox)
         lbi.Content = g
         lbi.Tag = extensionfile
-        lbi.ToolTip = New MyToolTip() With {.Content = lbibtnwithcb.ToolTip}
+        If Not IsNothing(lbibtnwithcb.ToolTip) Then
+            lbi.ToolTip = New MyToolTip() With
+                {
+                .Content = lbibtnwithcb.ToolTip,
+                .Resources = New ResourceDictionary() From {{“Lang”, lbibtnwithcb.ToolTipLang}}
+            }
+        End If
         ListPlugIns.Items.Add(lbi)
     End Sub
     '添加选择框插件
@@ -223,12 +235,16 @@ Class MainWindow
         Dim lbicheckbox As IITrainerExtensionCheckBox = Activator.CreateInstance(type)
         Dim Cbox = New MyCheckBox With {
             .Content = lbicheckbox.Text,
+            .Resources = New ResourceDictionary() From {{“Lang”, lbicheckbox.TextLang}},
             .Tag = extensionfile,
-            .Style = FindResource("CheckBoxStyle1"),
-            .ToolTip = New MyToolTip() With {
-                .Content = lbicheckbox.ToolTip
-            }
+            .Style = FindResource("CheckBoxStyle1")
         }
+        If Not IsNothing(lbicheckbox.ToolTip) Then
+            Cbox.ToolTip = New MyToolTip() With {
+                .Content = lbicheckbox.ToolTip,
+                .Resources = New ResourceDictionary() From {{“Lang”, lbicheckbox.ToolTipLang}}
+            }
+        End If
         AddHandler Cbox.Click,
             Sub(sender As CheckBox, e As RoutedEventArgs)
                 lbicheckbox.CheckBoxOnClick(sender.IsChecked)
@@ -240,24 +256,28 @@ Class MainWindow
         Dim lbibutton As ITrainerExtensionButton = Activator.CreateInstance(type)
         Dim Btn = New DarkStyle.DarkButton With {
             .Content = lbibutton.Text,
+            .Resources = New ResourceDictionary() From {{“Lang”, lbibutton.TextLang}},
             .Tag = extensionfile,
             .Style = FindResource("LBIBtnnStyle1"),
-            .Width = 175,
-            .ToolTip = New MyToolTip() With {
-                .Content = lbibutton.ToolTip
-            }
+            .Width = 175
         }
+        If Not IsNothing(lbibutton.ToolTip) Then
+            Btn.ToolTip = New MyToolTip() With {
+                .Content = lbibutton.ToolTip,
+                .Resources = New ResourceDictionary() From {{“Lang”, lbibutton.ToolTipLang}}
+            }
+        End If
         AddHandler Btn.Click, AddressOf lbibutton.ButtonOnClick
         ListPlugIns.Items.Add(Btn)
     End Sub
     '载入功能
     Private Sub BtnLoadLBMain_Click(sender As Object, e As RoutedEventArgs)
-        If Application.Language = 1 Then
+        If Lang.Id = 1 Then
             openFileDlg.Filter = "extension plugin|*.dll|pvz script file|*.pvzs"
         Else
             openFileDlg.Filter = "扩展插件|*.dll|pvz脚本文件|*.pvzs"
         End If
-        openFileDlg.Title = IIf(Application.Language = 1, "Load PlugIn", "载入插件")
+        openFileDlg.Title = IIf(Lang.Id = 1, "Load PlugIn", "载入插件")
         If openFileDlg.ShowDialog() Then
             If openFileDlg.FilterIndex = 1 Then
                 For Each f In openFileDlg.FileNames
@@ -412,7 +432,7 @@ Class MainWindow
 
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
         If e.Key = Key.F2 Then
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 MessageBox.Show(PVZ.LastWarning, "You got a warning", MessageBoxButton.OK, MessageBoxImage.Warning)
             Else
                 MessageBox.Show(PVZ.LastWarning, "你得到如下警告", MessageBoxButton.OK, MessageBoxImage.Warning)
@@ -485,18 +505,18 @@ Class MainWindow
                     Dim check = PVZ.CheckPeocess()
                     If check.HasValue Then
                         If check.Value Then
-                            TBStatus.Text = StatusTextFound(Application.Language)
+                            TBStatus.Text = StatusTextFound(Lang.Id)
                             PVZ.InitFunctions()
                             PVZ.Game.EnableRaisingEvents = True
                             AddHandler PVZ.Game.Exited, AddressOf GameExited
                         Else
-                            TBStatus.Text = StatusTextNotSuppost(Application.Language)
+                            TBStatus.Text = StatusTextNotSuppost(Lang.Id)
                         End If
                     Else
-                        TBStatus.Text = StatusTextOpenFailed(Application.Language)
+                        TBStatus.Text = StatusTextOpenFailed(Lang.Id)
                     End If
                 Else
-                    TBStatus.Text = StatusTextNotFound(Application.Language)
+                    TBStatus.Text = StatusTextNotFound(Lang.Id)
                 End If
             End If
         End If
@@ -505,15 +525,15 @@ Class MainWindow
     Private Sub textBlock_MouseDown(sender As Object, e As MouseButtonEventArgs)
         If e.ClickCount = 2 Then
             If e.LeftButton = MouseButtonState.Pressed AndAlso e.RightButton = MouseButtonState.Released Then
-                Application.Language += 1
-                Application.Language = Application.Language Mod 2
+                Lang.Id += 1
+                Lang.Id = Lang.Id Mod Lang.Count
                 BtnFindGame_Click(Nothing, Nothing)
                 For Each win As Window In Application.Current.Windows
-                    Application.ChangeLanguage(win.Content)
+                    Lang.ChangeLanguage(win.Content)
                 Next
             ElseIf e.RightButton = MouseButtonState.Pressed AndAlso e.LeftButton = MouseButtonState.Released Then
                 Dim output = New ExpendWindow()
-                output.TBTitle.Text = IIf(Application.Language = 1, "About", "关于")
+                output.TBTitle.Text = IIf(Lang.Id = 1, "About", "关于")
                 Dim text = New TextBox With {
                     .Width = 578,
                     .Height = 295,
@@ -525,7 +545,7 @@ Class MainWindow
                 }
                 Canvas.SetTop(text, 56)
                 Canvas.SetLeft(text, 10)
-                If Application.Language = 1 Then
+                If Lang.Id = 1 Then
                     text.Text = "This procedure is made by 冥谷川恋(email: lazuplismei@163.com )
 It can be used to modify various contents of Plants vs.zombies,it's a modifier which provide powerful functions of monitoring, modification and operation
 You can even manually plug it in to extend its capabilities(Just implement the interface in ITrainerExtension)
@@ -546,7 +566,7 @@ For later versions of 1.2.0.1063,1.2.0.1073 and the version from steam all inval
                 Dim btn = New DarkStyle.DarkButton With {
                     .BorderThickness = New Thickness(1),
                     .Width = 200,
-                    .Content = IIf(Application.Language = 1, "Close", "关闭"),
+                    .Content = IIf(Lang.Id = 1, "Close", "关闭"),
                     .FontSize = 20
                 }
                 Canvas.SetBottom(btn, 10)

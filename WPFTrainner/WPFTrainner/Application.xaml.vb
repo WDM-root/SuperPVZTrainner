@@ -7,7 +7,6 @@ Imports System.Windows.Markup
 Imports Microsoft.Win32
 
 Class Application
-    Public Shared Language As Integer
     Public Shared Function IsChineseSystem() As Boolean
         Dim lang = Thread.CurrentThread.CurrentCulture.Name
         Return lang = "zh-CN" OrElse lang = "en-US"
@@ -15,7 +14,7 @@ Class Application
 
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs)
         If Not IsChineseSystem() Then
-            Language = 1
+            ITrainerExtension.Lang.Id = 1
         End If
     End Sub
 
@@ -30,52 +29,6 @@ Class Application
         Process.Start(msg)
     End Sub
 
-
-    Public Shared Sub ChangeLanguage(child)
-        If IsNothing(child) Then Return
-        If TypeOf child Is Decorator Then
-            ChangeLanguage(CType(child, Decorator).Child)
-            Return
-        End If
-        If TypeOf child Is FrameworkElement Then
-            Dim frameworkEle As FrameworkElement = child
-            If frameworkEle.Resources IsNot Nothing AndAlso frameworkEle.Resources.Count > 0 AndAlso frameworkEle.Resources.Contains("Lang") Then
-                If TypeOf frameworkEle Is TextBlock Then
-                    CType(frameworkEle, TextBlock).Text = Regex.Unescape(frameworkEle.Resources("Lang")(Application.Language))
-                ElseIf TypeOf child Is ContentControl Then
-                    If TypeOf child Is HeaderedContentControl Then
-                        CType(frameworkEle, HeaderedContentControl).Header = Regex.Unescape(frameworkEle.Resources("Lang")(Application.Language))
-                    Else
-                        CType(frameworkEle, ContentControl).Content = Regex.Unescape(frameworkEle.Resources("Lang")(Application.Language))
-                    End If
-                ElseIf TypeOf child Is HeaderedItemsControl Then
-                    CType(frameworkEle, HeaderedItemsControl).Header = Regex.Unescape(frameworkEle.Resources("Lang")(Application.Language))
-                End If
-            End If
-            If Not IsNothing(frameworkEle.ContextMenu) Then
-                For Each item In frameworkEle.ContextMenu.Items
-                    ChangeLanguage(item)
-                Next
-            End If
-            If TypeOf frameworkEle Is Panel Then
-                For Each item In CType(frameworkEle, Panel).Children
-                    ChangeLanguage(item)
-                Next
-            End If
-            If TypeOf frameworkEle Is ItemsControl Then
-                For Each item In CType(frameworkEle, ItemsControl).Items
-                    ChangeLanguage(item)
-                Next
-            End If
-            If TypeOf frameworkEle Is ContentControl Then
-                ChangeLanguage(CType(frameworkEle, ContentControl).Content)
-            End If
-            If TypeOf frameworkEle Is HeaderedContentControl Then
-                ChangeLanguage(CType(frameworkEle, HeaderedContentControl).Header)
-            End If
-            ChangeLanguage(frameworkEle.ToolTip)
-        End If
-    End Sub
     <STAThread>
     <Obsolete>
     Public Shared Sub Main()
@@ -108,7 +61,7 @@ Class Application
                 text.Text = ex.ToString()
                 Dim btn = New DarkStyle.DarkButton With {
                     .Width = 200,
-                    .Content = IIf(Language = 1, "Restart", "重启程序"),
+                    .Content = IIf(ITrainerExtension.Lang.Id = 1, "Restart", "重启程序"),
                     .FontSize = 20
                 }
                 Canvas.SetBottom(btn, 10)
@@ -120,15 +73,15 @@ Class Application
                 output.MainCanvas.Children.Add(btn)
                 btn = New DarkStyle.DarkButton With {
                     .Width = 200,
-                    .Content = IIf(Language = 1, "SendToAuthor", "发给作者"),
+                    .Content = IIf(ITrainerExtension.Lang.Id = 1, "SendToAuthor", "发给作者"),
                     .FontSize = 20
                 }
                 Canvas.SetBottom(btn, 10)
                 Canvas.SetRight(btn, 80)
                 AddHandler btn.Click, Sub()
                                           Dim input = New InputDialog(
-                                          IIf(Language = 1, "Are you sure to send an email?", "确认要发送邮件?(万一得到回复了呢?)"),
-                                          IIf(Language = 1, "Your QQ number(if you have)", "请输入您的QQ号"),
+                                          IIf(ITrainerExtension.Lang.Id = 1, "Are you sure to send an email?", "确认要发送邮件?(万一得到回复了呢?)"),
+                                          IIf(ITrainerExtension.Lang.Id = 1, "Your QQ number(if you have)", "请输入您的QQ号"),
                                           1, 99999999999)
                                           If input.ShowDialog() Then
                                               SendToAuthor($"[{input.Value.ToString()}]" + ex.Message.Replace(vbCrLf, vbNullString), ex.ToString())

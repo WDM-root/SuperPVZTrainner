@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
+using ITrainerExtension;
 
 namespace TrainnerExpend
 {
@@ -14,27 +15,24 @@ namespace TrainnerExpend
     /// </summary>
     public partial class UserControl1 : UserControl
     {
-        private FolderBrowserDialog folderBrowserDialog;
-        private OpenFileDialog fileDialog;
+        private FolderBrowserDialog _folderBrowserDialog;
+        private OpenFileDialog _fileDialog;
 
         public UserControl1()
         {
             InitializeComponent();
-            folderBrowserDialog = new FolderBrowserDialog
+            _folderBrowserDialog = new FolderBrowserDialog
             {
                 AddToRecent = false,
                 ChangeDirectory = true,
                 CreatePrompt = true,
-                DirectoryNameText = "目录名",
-                ShowHidden = true,
-                Title = "选择包含pak文件的文件夹",
-                SelectButtonText = "选择文件夹"
+                ShowHidden = true
             };
-            fileDialog = new OpenFileDialog
+            _fileDialog = new OpenFileDialog
             {
                 AddExtension = true,
                 DefaultExt = "pak",
-                Filter = "pak文件|*.pak"
+                Filter = "pak|*.pak"
             };
         }
         private bool BytesEqual(byte[] b1, byte[] b2)
@@ -54,20 +52,33 @@ namespace TrainnerExpend
         }
         private void BtnDir_Click(object sender, RoutedEventArgs e)
         {
-            if (folderBrowserDialog.ShowDialog() == true)
+            if(Lang.IsChinese)
             {
-                TBDir.Text = folderBrowserDialog.DirectoryPath;
+                _folderBrowserDialog.DirectoryNameText = "目录名";
+                _folderBrowserDialog.Title = "选择包含pak文件的文件夹";
+                _folderBrowserDialog.SelectButtonText = "选择文件夹";
+            }
+            else
+            {
+                _folderBrowserDialog.DirectoryNameText = "DirectoryName";
+                _folderBrowserDialog.Title = "Select the folder containing the pak files";
+                _folderBrowserDialog.SelectButtonText = "Select folder";
+            }
+            
+            if (_folderBrowserDialog.ShowDialog() == true)
+            {
+                TBDir.Text = _folderBrowserDialog.DirectoryPath;
             }
         }
         private void BtnFile_Click(object sender, RoutedEventArgs e)
         {
             if (RBPack.IsChecked == true)
             {
-                fileDialog.CheckFileExists = false;
+                _fileDialog.CheckFileExists = false;
             }
-            if (fileDialog.ShowDialog() == true)
+            if (_fileDialog.ShowDialog() == true)
             {
-                TBFile.Text = fileDialog.FileName;
+                TBFile.Text = _fileDialog.FileName;
             }
         }
         private void BtnExecute_Click(object sender, RoutedEventArgs e)
@@ -107,7 +118,10 @@ namespace TrainnerExpend
                     writer.Write(content, 0, content.Length);
                 }
                 writer.Close();
-                MessageBox.Show("打包完成", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+                if(Lang.IsChinese)
+                    MessageBox.Show("打包完成", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Unpack finished", "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else if(RBUnPack.IsChecked == true)
             {
@@ -124,10 +138,12 @@ namespace TrainnerExpend
                         }
                         else
                         {
-                            if (MessageBox.Show("该pak文件的文件头可能已经损坏\n" +
-                                "或这不是一个有效的pvzpak文件\n" +
-                                "你依然想要尝试修复它并继续吗?",
-                                "继续?", MessageBoxButton.YesNo,
+                            string msg = "该pak文件的文件头可能已经损坏\n或这不是一个有效的pvzpak文件\n你依然想要尝试修复它并继续吗?";
+                            if(!Lang.IsChinese)
+                            {
+                                msg = "The header of the pak file may be corrupted.\n or this is not a valid pvzpak file.\nDo you still want to try to repair it and continue?";
+                            }
+                            if(MessageBox.Show(msg, Lang.IsChinese ? "继续" : "Continue", MessageBoxButton.YesNo,
                                 MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                             {
                                 file.Seek(0, SeekOrigin.Begin);
@@ -138,12 +154,18 @@ namespace TrainnerExpend
                     }
                     else
                     {
-                        MessageBox.Show("不是有效的pak文件", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if(Lang.IsChinese)
+                            MessageBox.Show("不是有效的pak文件", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        else
+                            MessageBox.Show("Not a valid pak file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("没有找到文件" + TBFile.Text, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if(Lang.IsChinese)
+                        MessageBox.Show("没有找到文件" + TBFile.Text, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show($"File {TBFile.Text} not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -195,7 +217,11 @@ namespace TrainnerExpend
                 f.Save(file);
             }
             file.Close();
-            MessageBox.Show("解包完成", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+            if(Lang.IsChinese)
+                MessageBox.Show("解包完成", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("Pack finished", "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
         //获得目录中的所有文件
         private string[] GetAllFiles(string path)
@@ -210,7 +236,11 @@ namespace TrainnerExpend
             }
             else
             {
-                MessageBox.Show($"路径{path}不存在", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                if(Lang.IsChinese)
+                    MessageBox.Show($"路径{path}不存在", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show($"Directory {path} not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 return null;
             }
             foreach (var dir in Directory.GetDirectories(path))

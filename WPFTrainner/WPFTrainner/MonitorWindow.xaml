@@ -23,16 +23,6 @@
         </TextBlock>
         <darkstyle:DarkCheckBox x:Name="CBHpTrack" Content="启动僵尸血量显示" ToolTipService.ShowDuration="20000"
                        Canvas.Left="105" Canvas.Top="16" Click="CBHpTrack_Click">
-            <darkstyle:DarkCheckBox.ToolTip>
-                <local:MyToolTip Content="Win10系统会因为文本及应用的大小设置而导致血量偏移，调至100%即可解决">
-                    <ToolTip.Resources>
-                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
-                            <sys:String>Win10系统会因为文本及应用的大小设置而导致血量偏移，调至100%即可解决</sys:String>
-                            <sys:String>Win10 system will cause text offset due to text and application size setting, which can be solved by adjusting to 100%</sys:String>
-                        </x:Array>
-                    </ToolTip.Resources>
-                </local:MyToolTip>
-            </darkstyle:DarkCheckBox.ToolTip>
             <darkstyle:DarkCheckBox.Resources>
                 <x:Array x:Key="Lang" Type="{x:Type sys:String}">
                     <sys:String>启动僵尸血量显示</sys:String>

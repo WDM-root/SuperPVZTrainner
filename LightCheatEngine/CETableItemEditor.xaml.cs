@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITrainerExtension;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,7 @@ namespace LightCheatEngine
             {
                 address = ExpressionEval.Parse(TBAddress.Text);
             }
-            catch(Exception ex)
+            catch
             {
                 CETableItem = null;
                 TBValue.Text = "0";
@@ -104,7 +105,10 @@ namespace LightCheatEngine
             Timer_Tick(null, null);
             if (CETableItem == null)
             {
-                MessageBox.Show("项目无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                if(Lang.IsChinese)
+                    MessageBox.Show("项目无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show("Item is invalid", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

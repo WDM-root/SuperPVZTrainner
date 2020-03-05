@@ -124,7 +124,14 @@
         </darkstyle:DarkButton>
         <darkstyle:DarkButton x:Name="BtnWK" Content="IZ" Canvas.Left="660" Canvas.Top="352" Height="30" Width="30" Click="BtnWK_Click">
             <Button.ToolTip>
-                <ToolTip Content="IZ布阵器来自Winkle雪线" Background="#FF252526" Foreground="White"/>
+                <ToolTip Content="IZ布阵器来自Winkle雪线" Background="#FF252526" Foreground="White">
+                    <ToolTip.Resources>
+                        <x:Array x:Key="Lang" Type="{x:Type sys:String}">
+                            <sys:String>IZ布阵器来自Winkle雪线</sys:String>
+                            <sys:String>IZ Format Setter from Winkle雪线</sys:String>
+                        </x:Array>
+                    </ToolTip.Resources>
+                </ToolTip>
             </Button.ToolTip>
         </darkstyle:DarkButton>
         <darkstyle:DarkButton x:Name="BtnLoad"  Content="读取场景" Canvas.Left="695" Canvas.Top="330" Height="30" Width="100" Click="BtnLoad_Click">

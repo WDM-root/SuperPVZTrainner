@@ -20,6 +20,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
 using SharpDisasm.Udis86;
+using ITrainerExtension;
 
 namespace LightCheatEngine
 {
@@ -31,15 +32,13 @@ namespace LightCheatEngine
         public LightCEDisasmControl()
         {
             InitializeComponent();
-            LVMain.ItemsSource = List;
+            LVMain.ItemsSource = _list;
             saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "可执行程序(*.exe)|*.exe";
-            saveFileDialog.Title = "保存程序";
             saveFileDialog.DefaultExt = "exe";
         }
         SaveFileDialog saveFileDialog;
 
-        private static readonly ObservableCollection<DisasmItem> List = new ObservableCollection<DisasmItem>();
+        private static readonly ObservableCollection<DisasmItem> _list = new ObservableCollection<DisasmItem>();
 
         private void LVMain_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -102,7 +101,7 @@ namespace LightCheatEngine
             }
             else
             {
-                List.Clear();
+                _list.Clear();
             }
             Window window = Window.GetWindow(this);
             window.Activated += Window_Activated;
@@ -117,11 +116,11 @@ namespace LightCheatEngine
 
         private void AddDisasmItem()
         {
-            List.Clear();
+            _list.Clear();
             int offset = 0;
             while (!PVZ.Memory.CheckRead(StartAddress + offset))
             {
-                List.Add(new DisasmItem(StartAddress + offset));
+                _list.Add(new DisasmItem(StartAddress + offset));
                 offset++;
                 if (offset == 256) return;
             }
@@ -129,7 +128,7 @@ namespace LightCheatEngine
             var disasm = new Disassembler(buffer, ArchitectureMode.x86_32, (ulong)StartAddress, true);
             foreach (var item in disasm.Disassemble())
             {
-                List.Add(new DisasmItem(item));
+                _list.Add(new DisasmItem(item));
             }
         }
 
@@ -158,9 +157,12 @@ namespace LightCheatEngine
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (List.Count>0)
+            if (_list.Count>0)
             {
-                string result = DarkStyle.InputDialog.ShowInputDialog("转到地址", "输入要跳转到的地址", List[0].Address);
+                string result = DarkStyle.InputDialog.ShowInputDialog(
+                    Lang.IsChinese ? "转到地址" : "Go to address",
+                    Lang.IsChinese ? "输入要跳转到的地址" : "Enter the address to jump to",
+                    _list[0].Address, !Lang.IsChinese);
                 if (result == null) return;
                 if(symbols.ContainsKey(result))
                 {
@@ -168,7 +170,7 @@ namespace LightCheatEngine
                     StartAddress = symbols[result];
                     AddDisasmItem();
                     LVMain.SelectedIndex = 0;
-                    LVMain.ScrollIntoView(List[0]);
+                    LVMain.ScrollIntoView(_list[0]);
                 }
                 else
                 {
@@ -181,11 +183,14 @@ namespace LightCheatEngine
                             StartAddress = Convert.ToInt32(result, 16);
                         AddDisasmItem();
                         LVMain.SelectedIndex = 0;
-                        LVMain.ScrollIntoView(List[0]);
+                        LVMain.ScrollIntoView(_list[0]);
                     }
                     catch
                     {
-                        MessageBox.Show("地址不合法", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if(Lang.IsChinese)
+                            MessageBox.Show("地址不合法", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        else
+                            MessageBox.Show("Invaild address", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -196,8 +201,11 @@ namespace LightCheatEngine
             if (LVMain.SelectedIndex >= 0)
             {
                 int index = LVMain.SelectedIndex;
-                DisasmItem disasmItem = List[index];
-                string result = DarkStyle.InputDialog.ShowInputDialog($"汇编于{disasmItem.Address}", "输入汇编指令", disasmItem.AsmCode);
+                DisasmItem disasmItem = _list[index];
+                string result = DarkStyle.InputDialog.ShowInputDialog(
+                  Lang.IsChinese ? $"汇编于{disasmItem.Address}" : $"Assemble at {disasmItem.Address}",
+                  Lang.IsChinese ? "输入汇编指令" : "Enter assembly instructions",
+                    disasmItem.AsmCode, !Lang.IsChinese);
                 if (result != null && result != "??")
                 {
                     XEDPARSE xed = new XEDPARSE();
@@ -206,7 +214,10 @@ namespace LightCheatEngine
                     XEDParse.XEDParseAssemble(ref xed);
                     if (xed.dest_size == 0)
                     {
-                        MessageBox.Show(xed.error, "汇编指令错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(xed.error,
+                            Lang.IsChinese ? "汇编指令错误" : "Assembly instructions error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
                     }
                     else
                     {
@@ -223,7 +234,12 @@ namespace LightCheatEngine
                         }
                         else if (xed.dest_size > disasmItem.length)
                         {
-                            if (MessageBox.Show("目标指令长度大于当前指令长度，使用nop覆盖？", "提问", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                            if(MessageBox.Show(
+                                Lang.IsChinese ? "目标指令长度大于当前指令长度，使用nop覆盖？" :
+                                "The target instruction length is greater than the current instruction length. Use nop to cover it?",
+                                Lang.IsChinese ? "提问" : "Question",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question) == MessageBoxResult.Yes)
                             {
                                 int length = disasmItem.length;
                                 try
@@ -231,12 +247,15 @@ namespace LightCheatEngine
                                     while (xed.dest_size > length)
                                     {
                                         index++;
-                                        length += List[index].length;
+                                        length += _list[index].length;
                                     }
                                 }
                                 catch (IndexOutOfRangeException)
                                 {
-                                    MessageBox.Show("指令长度未知", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    if(Lang.IsChinese)
+                                        MessageBox.Show("指令长度未知", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    else
+                                        MessageBox.Show("Unknown instruction length", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                                     return;
                                 }
                                 PVZ.Memory.WriteBytesStrong(disasmItem.address, Enumerable.Repeat<byte>(0x90, length).ToArray(), length);
@@ -253,7 +272,7 @@ namespace LightCheatEngine
         {
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 PVZ.Memory.WriteBytesStrong(disasmItem.address, Enumerable.Repeat<byte>(0x90, disasmItem.length).ToArray(), disasmItem.length);
                 AddDisasmItem();
             }
@@ -263,7 +282,7 @@ namespace LightCheatEngine
         {
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 Clipboard.SetText(disasmItem.Address);
             }
         }
@@ -272,7 +291,7 @@ namespace LightCheatEngine
         {
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 Clipboard.SetText(disasmItem.MachineCode);
             }
         }
@@ -281,7 +300,7 @@ namespace LightCheatEngine
         {
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 Clipboard.SetText(disasmItem.AsmCode);
             }
         }
@@ -291,6 +310,8 @@ namespace LightCheatEngine
             if (PVZ.Game!=null)
             {
                 saveFileDialog.FileName = PVZ.Game.ProcessName;
+                saveFileDialog.Filter = Lang.IsChinese ? "可执行程序(*.exe)|*.exe" : "Executable(*.exe)|*.exe";
+                saveFileDialog.Title = Lang.IsChinese ? "保存程序" : "Save program";
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     ProcessModule module = PVZ.Game.MainModule;
@@ -302,7 +323,10 @@ namespace LightCheatEngine
                         int pos = StartAddress - module.BaseAddress.ToInt32();
                         if (pos < 0 || pos > stream.Length)
                         {
-                            MessageBox.Show("当前内存区域不在主模块内", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                            if(Lang.IsChinese)
+                                MessageBox.Show("当前内存区域不在主模块内", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                            else
+                                MessageBox.Show("The current memory area is not in the main module", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         else
                         {
@@ -318,7 +342,7 @@ namespace LightCheatEngine
         {
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 PVZ.Memory.CreateThread(disasmItem.address);
             }
         }
@@ -330,22 +354,28 @@ namespace LightCheatEngine
         {
             if (PVZ.Game != null)
             {
-                string symbol = DarkStyle.InputDialog.ShowInputDialog("定义符号", "输入一个符号用于定位地址");
-                if (symbol == null) return;
-                if (!string.IsNullOrWhiteSpace(symbol))
+                string symbol = DarkStyle.InputDialog.ShowInputDialog(
+                    Lang.IsChinese ? "定义符号" : "Define symbols",
+                    Lang.IsChinese ? "输入一个符号用于定位地址" : "Enter a symbol to locate the address",
+                    null, !Lang.IsChinese);
+                if(symbol == null) return;
+                if(!string.IsNullOrWhiteSpace(symbol))
                 {
                     symbol = symbol.Trim();
                     if (symbols.ContainsKey(symbol))
                     {
-                        if (MessageBox.Show($"符号{symbol}已经定义，确认要覆盖地址吗", "提问",
-                            MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        if(MessageBox.Show(
+                            Lang.IsChinese ? $"符号{symbol}已经定义，确认要覆盖地址吗" : $"{symbol} already defined，Are you sure you want to overwrite the address",
+                            Lang.IsChinese ? "提问" : "Question",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
                             symbols[symbol] = PVZ.Memory.AllocMemory();
                             privousAddress.Push(StartAddress);
                             StartAddress = symbols[symbol];
                             AddDisasmItem();
                             LVMain.SelectedIndex = 0;
-                            LVMain.ScrollIntoView(List[0]);
+                            LVMain.ScrollIntoView(_list[0]);
                         }
                     }
                     else
@@ -355,12 +385,15 @@ namespace LightCheatEngine
                         StartAddress = symbols[symbol];
                         AddDisasmItem();
                         LVMain.SelectedIndex = 0;
-                        LVMain.ScrollIntoView(List[0]);
+                        LVMain.ScrollIntoView(_list[0]);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("符号无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if(Lang.IsChinese)
+                        MessageBox.Show("符号无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Invalid symbol", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -372,14 +405,14 @@ namespace LightCheatEngine
             StartAddress = address;
             AddDisasmItem();
             LVMain.SelectedIndex = 0;
-            LVMain.ScrollIntoView(List[0]);
+            LVMain.ScrollIntoView(_list[0]);
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
         {
             if (privousAddress.Count > 0)
             {
-                MIBack.Header = "退回地址" + privousAddress.Peek().ToString("X8");
+                MIBack.Header = Lang.IsChinese ? "退回地址" : "Back to address... " + privousAddress.Peek().ToString("X8");
                 MIBack.Visibility = Visibility.Visible;
             }
             else
@@ -388,7 +421,7 @@ namespace LightCheatEngine
             }
             if (LVMain.SelectedIndex >= 0)
             {
-                DisasmItem disasmItem = List[LVMain.SelectedIndex];
+                DisasmItem disasmItem = _list[LVMain.SelectedIndex];
                 if (disasmItem.AsmCode.StartsWith("j") || disasmItem.AsmCode.StartsWith("call"))
                 {
                     string[] subs = disasmItem.AsmCode.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -397,7 +430,7 @@ namespace LightCheatEngine
                         try
                         {
                             int address = Convert.ToInt32(subs[1].Trim().Substring(2), 16);
-                            MIFollow.Header = "跟随地址" + address.ToString("X8");
+                            MIFollow.Header = Lang.IsChinese ? "跟随地址" : "Follow address... " + address.ToString("X8");
                             MIFollow.Tag = address;
                             MIFollow.Visibility = Visibility.Visible;
                             return;
@@ -418,7 +451,7 @@ namespace LightCheatEngine
             StartAddress = privousAddress.Pop();
             AddDisasmItem();
             LVMain.SelectedIndex = 0;
-            LVMain.ScrollIntoView(List[0]);
+            LVMain.ScrollIntoView(_list[0]);
         }
     }
 

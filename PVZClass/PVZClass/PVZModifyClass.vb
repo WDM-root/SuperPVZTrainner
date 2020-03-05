@@ -3,12 +3,14 @@ Imports System.Runtime.CompilerServices
 
 Public Module ExtensionModule
     <Extension()>
-    Public Function GetDescription(ByVal this As [Enum]) As String
-        Try
-            Return CType(this.GetType().GetField(this.ToString()).GetCustomAttributes(GetType(DescriptionAttribute), True)(0), DescriptionAttribute).Description
-        Catch ex As Exception
-            Return this.ToString()
-        End Try
+    Public Function GetDescription(ByVal this As [Enum], Optional lang As Integer = 0) As String
+        If lang = 0 Then
+            Try
+                Return CType(this.GetType().GetField(this.ToString()).GetCustomAttributes(GetType(DescriptionAttribute), True)(0), DescriptionAttribute).Description
+            Catch ex As Exception
+            End Try
+        End If
+        Return this.ToString()
     End Function
 End Module
 

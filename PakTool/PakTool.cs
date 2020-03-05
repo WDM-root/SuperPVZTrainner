@@ -29,6 +29,10 @@ namespace TrainnerExpend
         public string Text => "Pak解包打包";
         public string ToolTip => "Pak解包打包,作者冥谷川恋";
 
+        public string[] TextLang => new[] { "Pak解包打包", "Pak Unpack&Pack" };
+
+        public string[] ToolTipLang => new[] { "Pak解包打包,作者冥谷川恋", "Pak Unpack&Pack by Lazuplis" };
+
         public void Layout(Window owner, Canvas canvas)
         {
             //设置控件位置

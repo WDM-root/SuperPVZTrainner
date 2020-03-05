@@ -5,41 +5,51 @@ Imports System.Windows.Interop
 
 Public Class HpTrackWindow
     Public hpfontcolor As Color = Colors.White
-    Private Structure Ipoint
+    Private Structure Spoint
         Dim x As Integer
         Dim y As Integer
     End Structure
-    Private Declare Function ClientToScreen Lib "user32.dll" (ByVal hwnd As Integer, ByRef lppoint As Ipoint) As Boolean
+    Private Declare Function ClientToScreen Lib "user32.dll" (ByVal hwnd As Integer, ByRef lppoint As Spoint) As Boolean
     <DllImport("user32.dll", SetLastError:=True)>
     Private Shared Function SetWindowLong(ByVal hWnd As IntPtr, ByVal nIndex As Integer, ByVal dwNewLong As Integer) As Integer
     End Function
     Private Declare Auto Function IsIconic Lib "user32.dll" (ByVal hwnd As IntPtr) As Boolean
-    ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
-    ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
-    <DllImport("user32.dll", SetLastError:=True)>
-    Private Shared Function GetForegroundWindow() As IntPtr
-    End Function
     Private prezombienum As Integer = 0
+    Private Timer As Threading.DispatcherTimer
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         IsHitTestVisible = False
+        dpi = GetDpiFromVisual()
         SetWindowLong(New WindowInteropHelper(Me).Handle, -20, &H20)
-        Dim Timer As New Threading.DispatcherTimer()
+        Timer = New Threading.DispatcherTimer()
+        Timer.Interval = TimeSpan.FromMilliseconds(30)
         AddHandler Timer.Tick, New EventHandler(AddressOf TimerTick)
         Timer.Start()
     End Sub
+    Dim dpi As Double
+    Private Function GetDpiFromVisual() As Double
+        Dim source = PresentationSource.FromVisual(Me)
+        If Not IsNothing(source?.CompositionTarget) Then
+            Return source.CompositionTarget.TransformToDevice.M11
+        End If
+        Return 1
+    End Function
+    Public Property IsHide As Boolean
     Private Sub TimerTick(sender As Object, e As EventArgs)
-        Dim p As New Ipoint()
+        Dim p As New Spoint()
         If Not IsNothing(PVZ.Game) Then
             ClientToScreen(PVZ.Game.MainWindowHandle, p)
-            If IsIconic(PVZ.Game.MainWindowHandle) Then
-                Visibility = Visibility.Collapsed
-            Else
-                Visibility = Visibility.Visible
+            If Not IsHide Then
+                If IsIconic(PVZ.Game.MainWindowHandle) Then
+                    Visibility = Visibility.Collapsed
+                Else
+                    Visibility = Visibility.Visible
+                End If
             End If
-            Topmost = GetForegroundWindow() = PVZ.Game.MainWindowHandle
         End If
-        Top = p.y
-        Left = p.x
+        Top = p.y / dpi
+        Left = p.x / dpi
+        Height = 600 / dpi
+        Width = 800 / dpi
         If PVZ.ZombiesCount <> prezombienum Then
             Canvas1.Children.Clear()
             For Each zombie In PVZ.AllZombies
@@ -94,9 +104,13 @@ Public Class HpTrackWindow
                     tblist(i).Text += zblist(i).MaxAccessoriesType2HP.ToString()
                     CType(tblist(i).Parent, Border).BorderThickness = New Thickness(1)
                 End If
-                Canvas1.Children.Item(i).SetValue(Canvas.LeftProperty, Convert.ToDouble(zblist(i).ImageX + 10))
-                Canvas1.Children.Item(i).SetValue(Canvas.TopProperty, Convert.ToDouble(zblist(i).ImageY - 10))
+                Canvas1.Children.Item(i).SetValue(Canvas.LeftProperty, Convert.ToDouble(zblist(i).ImageX + 10) / dpi)
+                Canvas1.Children.Item(i).SetValue(Canvas.TopProperty, Convert.ToDouble(zblist(i).ImageY - 10) / dpi)
             Next
         End If
+    End Sub
+
+    Private Sub Window_Closed(sender As Object, e As EventArgs)
+        Timer.Stop()
     End Sub
 End Class

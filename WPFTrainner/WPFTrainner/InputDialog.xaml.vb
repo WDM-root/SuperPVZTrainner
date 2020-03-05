@@ -8,7 +8,7 @@
         TBTitle.Text = title
         NudInput.MinValue = minval
         NudInput.MaxValue = maxval
-        If Application.Language = 1 Then
+        If ITrainerExtension.Lang.Id = 1 Then
             TBDesc.Text = desc + $"Range({minval}-{maxval})"
             BtnOK.Content = "Ok"
             BtnCancel.Content = "Cancel"

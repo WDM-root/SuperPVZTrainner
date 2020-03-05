@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PVZWPFTrainner"
         mc:Ignorable="d" Title="血量显示窗口"
         Height="600" Width="800" ShowInTaskbar="False" Loaded="Window_Loaded"
-        WindowStyle="None" ResizeMode="NoResize" Topmost="True"
+        WindowStyle="None" ResizeMode="NoResize" Topmost="True" Closed="Window_Closed"
         Background="#00FFFFFF" AllowsTransparency="True" >
     <Border BorderThickness="2" BorderBrush="Crimson">
         <Canvas Name="Canvas1">

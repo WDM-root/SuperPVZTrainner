@@ -1,5 +1,6 @@
 ﻿Imports System.Text.RegularExpressions
 Imports System.Windows.Media.Animation
+Imports ITrainerExtension
 Imports PVZClass
 Public Class MonitorWindow
     Private ReadOnly tracker As New HpTrackWindow()
@@ -63,7 +64,7 @@ Public Class MonitorWindow
             Next
             SPCrater.Children.Add(panel)
         Next
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
     Private Sub Window_MouseDown(sender As Object, e As MouseButtonEventArgs)
         Try
@@ -91,7 +92,7 @@ Public Class MonitorWindow
     '鼠标
     Private Sub Timer1Tick(sender As Object, e As EventArgs)
         TBMouseInGameArea.Text = IIf(PVZ.Mouse.InGameArea, "是", "否")
-        If Application.Language = 1 Then
+        If Lang.Id = 1 Then
             TBMouseInGameArea.Text = PVZ.Mouse.InGameArea
         End If
         TBMouseX.Text = PVZ.Mouse.X
@@ -158,7 +159,7 @@ Public Class MonitorWindow
             zombie = New PVZ.Zombie(LBZombies.SelectedItem.Text)
             TBZombieType.Text = zombie.Type.GetDescription()
             TBZombieId.Text = "id = " + zombie.Id.ToString()
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 TBZombieType.Text = zombie.Type.ToString()
             End If
             If Not TBZombieX.IsFocused Then
@@ -237,7 +238,7 @@ Public Class MonitorWindow
         If LBPlants.SelectedIndex >= 0 Then
             plant = New PVZ.Plant(LBPlants.SelectedItem.Text)
             TBPlantType.Text = plant.Type.GetDescription()
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 TBPlantType.Text = plant.Type.ToString()
             End If
             TBPlantId.Text = "id = " + plant.Id.ToString()
@@ -312,7 +313,7 @@ Public Class MonitorWindow
         If LBCoins.SelectedIndex >= 0 Then
             coin = New PVZ.Coin(LBCoins.SelectedItem.Text)
             TBCoinType.Text = coin.Type.GetDescription()
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 TBCoinType.Text = coin.Type.ToString()
             End If
             TBCoinId.Text = "id = " + coin.Id.ToString()
@@ -366,7 +367,7 @@ Public Class MonitorWindow
             vase = New PVZ.Vase(crater.BaseAddress)
             griditem = crater
             TBGriditemType.Text = griditem.Type.GetDescription()
-            If Application.Language = 1 Then
+            If Lang.Id = 1 Then
                 TBGriditemType.Text = griditem.Type.ToString()
             End If
             TBGriditemId.Text = "id = " + griditem.Id.ToString()
@@ -656,9 +657,11 @@ Public Class MonitorWindow
     '血量窗口显示
     Private Sub CBHpTrack_Click(sender As Object, e As RoutedEventArgs)
         If CBHpTrack.IsChecked Then
+            tracker.IsHide = False
             tracker.Show()
         Else
             tracker.Visibility = Visibility.Collapsed
+            tracker.IsHide = True
         End If
     End Sub
     '血量颜色

@@ -10,8 +10,10 @@ namespace LightCheatEngine
 {
     public class LightCETable : ITrainerExtension.ITrainerExtensionUserControl
     {
-        public string Text => "CE表单(Light)";
+        public string[] TextLang => new[] { "CE表单(Light)", "CE Table(Light)" };
+        public string Text =>  "CE表单(Light)";
 
+        public string[] ToolTipLang => new[] { "提供简单的CE地址修改功能", "Provide simple CE address modification function" };
         public string ToolTip => "提供简单的CE地址修改功能";
 
         public void Layout(Window owner, Canvas canvas)
@@ -30,8 +32,10 @@ namespace LightCheatEngine
 
     public class LightCEDisasm : ITrainerExtension.ITrainerExtensionUserControl
     {
+        public string[] TextLang => new[] { "反汇编(Light)", "Disassembly(Light)" };
         public string Text => "反汇编(Light)";
 
+        public string[] ToolTipLang => new[] { "提供简单的反汇编功能", "Provides simple disassembly functions" };
         public string ToolTip => "提供简单的反汇编功能";
 
         public void Layout(Window owner, Canvas canvas)

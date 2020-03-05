@@ -1,4 +1,5 @@
-﻿Imports PVZClass
+﻿Imports ITrainerExtension
+Imports PVZClass
 
 Public Class WaveManageDialog
     Private Sub Window_MouseDown(sender As Object, e As MouseButtonEventArgs)
@@ -61,7 +62,7 @@ Public Class WaveManageDialog
     Private Sub CBLevelTypes_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
         If IsLoaded AndAlso CBLevelTypes.Tag <> True Then
             If Not PVZ.SetJumpDestination(LevelsList(CBLevels.SelectedIndex), TypesList(CBLevelTypes.SelectedIndex)) Then
-                If Application.Language = 1 Then
+                If Lang.Id = 1 Then
                     MessageBox.Show("code distance too far,short jump does not support this modification", "Information", MessageBoxButton.OK, MessageBoxImage.Information)
                 Else
                     MessageBox.Show("指令距离太远,短程jmp不支持此项修改", "信息", MessageBoxButton.OK, MessageBoxImage.Information)
@@ -89,6 +90,6 @@ Public Class WaveManageDialog
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
 End Class

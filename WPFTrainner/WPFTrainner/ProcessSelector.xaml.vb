@@ -1,6 +1,8 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
 Imports System.Diagnostics
+Imports ITrainerExtension
+
 Public Class ProcessSelector
     Public Property ProcessId As Integer
     Public Property ProcessName As String
@@ -21,7 +23,7 @@ Public Class ProcessSelector
             dt.Rows.Add(pro.Id, pro.ProcessName, pro.MainWindowTitle)
         Next
         LVMain.DataContext = dt
-        If Application.Language = 1 Then
+        If Lang.Id = 1 Then
             TBTitle.Text = "ProcessSelector(Click the header to sort)"
             GVCPID.Header = "PID"
             GVCName.Header = "Name"

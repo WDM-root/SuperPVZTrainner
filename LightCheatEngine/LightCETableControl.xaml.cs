@@ -22,6 +22,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using PVZClass;
 using Microsoft.Win32;
+using ITrainerExtension;
 
 namespace LightCheatEngine
 {
@@ -45,12 +46,10 @@ namespace LightCheatEngine
             timer.Tick += Timer_Tick;
             timer.Start();
             saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "项目文件(*.xml)|*.xml";
             saveFileDialog.AddExtension = true;
             saveFileDialog.DefaultExt = "xml";
 
             openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "项目文件(*.xml)|*.xml";
             openFileDialog.AddExtension = true;
             openFileDialog.DefaultExt = "xml";
         }
@@ -66,6 +65,7 @@ namespace LightCheatEngine
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             CETableItemEditor cETableItemEditor = new CETableItemEditor();
+            ITrainerExtension.Lang.ChangeLanguage(cETableItemEditor.Content);
             if (cETableItemEditor.ShowDialog() == true)
                 List.Add(cETableItemEditor.CETableItem);
         }
@@ -107,6 +107,7 @@ namespace LightCheatEngine
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
+            saveFileDialog.Filter = Lang.IsChinese ? "项目文件(*.xml)|*.xml" : "Items(*.xml)|*.xml";
             if (saveFileDialog.ShowDialog() == true)
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(List.GetType());
@@ -116,6 +117,7 @@ namespace LightCheatEngine
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
+            openFileDialog.Filter = Lang.IsChinese ? "项目文件(*.xml)|*.xml" : "Items(*.xml)|*.xml";
             if (openFileDialog.ShowDialog() == true)
             {
                 List.Clear();
@@ -222,7 +224,7 @@ namespace LightCheatEngine
         public CETableItem(OffsetAddress address, DataType dataType)
         {
             this.address = address;
-            this.desc = "<无描述>";
+            this.desc = "<Empty>";
             this.dataType = dataType;
             UpDate();
         }

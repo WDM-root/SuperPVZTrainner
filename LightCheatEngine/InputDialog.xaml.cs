@@ -1,8 +1,8 @@
-﻿using PVZClass;
+﻿using ITrainerExtension;
+using PVZClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,12 +20,12 @@ namespace LightCheatEngine
     /// </summary>
     public partial class InputDialog : Window
     {
-        public InputDialog(CETableItem cETableItem)
+        public InputDialog(CETableItem ceTableItem)
         {
             InitializeComponent();
-            this.cETableItem = cETableItem;
-            TBTitle.Text += cETableItem.Address.GetAddress();
-            TBContent.Text = cETableItem.DataValue.ToString();
+            this.cETableItem = ceTableItem;
+            TBTitle.Text = (Lang.IsChinese ? "修改地址" : "Change value at...") + ceTableItem.Address.GetAddress();
+            TBContent.Text = ceTableItem.DataValue.ToString();
             TBContent.Focus();
             TBContent.SelectAll();
         }
@@ -67,8 +67,10 @@ namespace LightCheatEngine
             }
             catch
             {
-                MessageBox.Show("数值无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
+                if(Lang.IsChinese)
+                    MessageBox.Show("数值无效", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show("Invalid value", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

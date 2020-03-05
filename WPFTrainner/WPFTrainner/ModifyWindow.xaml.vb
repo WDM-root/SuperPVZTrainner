@@ -1,4 +1,5 @@
-﻿Imports PVZClass
+﻿Imports ITrainerExtension
+Imports PVZClass
 
 Public Class ModifyWindow
     Private Function DealKeyDown(sender As Object, e As KeyEventArgs) As Boolean
@@ -39,9 +40,9 @@ Public Class ModifyWindow
         GetLevel(advLevel, gameLevel)
         Dim msg = PVZ.JumpLevel(advLevel, gameLevel)
         If msg = 0 Then
-            MessageBox.Show(jlText1(Application.Language), "Information", MessageBoxButton.OK, MessageBoxImage.Information)
+            MessageBox.Show(jlText1(Lang.Id), "Information", MessageBoxButton.OK, MessageBoxImage.Information)
         ElseIf msg = 1 Then
-            MessageBox.Show(jlText2(Application.Language), "Information", MessageBoxButton.OK, MessageBoxImage.Information)
+            MessageBox.Show(jlText2(Lang.Id), "Information", MessageBoxButton.OK, MessageBoxImage.Information)
         End If
     End Sub
     Private Sub GetLevel(ByRef advLevel As Integer, ByRef gameLevel As Byte)
@@ -125,7 +126,7 @@ Public Class ModifyWindow
         End If
     End Sub
     Private Sub DaveSelCardNum_Click(sender As Object, e As RoutedEventArgs)
-        Dim flag = Application.Language = 0
+        Dim flag = Lang.Id = 0
         Dim inputDlg = New InputDialog(
             IIf(flag, "请输入数值", "Please enter a value"),
             IIf(flag, "选卡张数", "Number of cards"), 1, 10)
@@ -140,7 +141,7 @@ Public Class ModifyWindow
                          NvdBlue2Y.Value, NvdBlue2X.Value)
     End Sub
     Private Sub GraveAppearWave_Click(sender As Object, e As RoutedEventArgs)
-        Dim flag = Application.Language = 0
+        Dim flag = Lang.Id = 0
         Dim inputDlg = New InputDialog(
             IIf(flag, "请输入数值", "Please enter a value"),
             IIf(flag, "墓碑出现的波数", "Grave appear at wave"), 3, Byte.MaxValue)
@@ -890,7 +891,7 @@ Public Class ModifyWindow
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        Application.ChangeLanguage(Content)
+        Lang.ChangeLanguage(Content)
     End Sub
     Private Sub TBDamageProjectile_PreviewKeyDown(sender As Object, e As KeyEventArgs)
         If DealKeyDown(sender, e) Then
