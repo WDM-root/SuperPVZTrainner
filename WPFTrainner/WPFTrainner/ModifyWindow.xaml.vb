@@ -662,7 +662,7 @@ Public Class ModifyWindow
                 Dim zseeds = PVZ.ZombieSeed
                 For index = 0 To waveNum - 1
                     For jndex = 0 To 49
-                        PVZ.Memory.WriteByte(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4, zseeds(random.Next(zseeds.Length)))
+                        PVZ.Memory.WriteInteger(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4, zseeds(random.Next(zseeds.Length)))
                     Next
                 Next
                 PVZ.ClearZombiePreview()
@@ -692,11 +692,11 @@ Public Class ModifyWindow
                     PVZ.CallZombieList()
                     For index = 0 To waveNum - 1
                         For jndex = 0 To 49
-                            Dim z = PVZ.Memory.ReadByte(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4)
+                            Dim z = PVZ.Memory.ReadInteger(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4)
                             If z = -1 Then
                                 Exit For
                             ElseIf z = 26 Then
-                                PVZ.Memory.WriteByte(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4, flag)
+                                PVZ.Memory.WriteInteger(PVZ.BaseAddress + &H6B4 + jndex * 4 + index * 50 * 4, flag)
                             End If
                         Next
                     Next
