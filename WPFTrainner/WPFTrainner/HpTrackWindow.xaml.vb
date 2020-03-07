@@ -111,6 +111,6 @@ Public Class HpTrackWindow
     End Sub
 
     Private Sub Window_Closed(sender As Object, e As EventArgs)
-        Timer.Stop()
+        Timer?.Stop()
     End Sub
 End Class
