@@ -63,7 +63,7 @@ namespace PVZTools
         }
     }
 
-    public partial class LawnStringsManager : ITrainerExtensionUserControl
+    public class LawnStringsManagerPlugIn : ITrainerExtensionUserControl
     {
         public string Text => "LawnStrings管理器";
 
@@ -71,7 +71,7 @@ namespace PVZTools
 
         public string[] ToolTipLang => new[] { "可用于动态修改LawnStrings的内容", "It can be used to dynamically modify the contents of LawnStrings" };
 
-        string ITrainerExtensionItem.ToolTip => "可用于动态修改LawnStrings的内容";
+        public string ToolTip => "可用于动态修改LawnStrings的内容";
 
         public void Layout(Window owner, Canvas canvas)
         {
@@ -138,7 +138,7 @@ namespace PVZTools
         }
     }
 
-    public partial class PlantMoveControler : ITrainerExtensionUserControl
+    public class PlantMoveControlerPlugIn : ITrainerExtensionUserControl
     {
         public string Text => "键盘控制植物";
 
@@ -146,7 +146,7 @@ namespace PVZTools
 
         public string[] ToolTipLang => new[] { "允许通过按键来控制场上的2个植物", "Allows control of 2 plants on the field via the keyboard" };
 
-        string ITrainerExtensionItem.ToolTip => "允许通过按键来控制场上的2个植物";
+        public string ToolTip => "允许通过按键来控制场上的2个植物";
 
         public void Layout(Window owner, Canvas canvas)
         {

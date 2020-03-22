@@ -47,3 +47,5 @@
 /WPFTrainner/ITrainerExtension/bin/Release
 /WPFTrainner/WPFTrainner/bin/Release
 *.log
+Setup/Debug/setup.exe
+Setup/Debug/Setup.msi
